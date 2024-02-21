@@ -1,0 +1,113 @@
+image: docker:20.10.16
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+  KUBE_CONTEXT: microarch-ru/microservices/dotnet/${CI_PROJECT_NAME}:${CI_PROJECT_NAME}
+
+.kube-context:
+  before_script:
+    - if [ -n "$KUBE_CONTEXT" ]; then kubectl config use-context "$KUBE_CONTEXT"; fi
+
+services:
+  - docker:20.10.16-dind
+
+stages:
+  - fetch-version
+  - build
+  - release
+  - tag  
+  - deploy
+
+# Получаем версию сборки. Это инкримент согласно https://semver.org/lang/ru/
+fetch-semantic-version:
+  image: node:latest
+  stage: fetch-version
+  only:
+    refs:
+      - main
+  except:
+    refs:
+      - tags    
+  script:
+    - npm install @semantic-release/gitlab @semantic-release/exec
+    - npx semantic-release --generate-notes false --dry-run    
+  artifacts:
+    paths:
+      - VERSION.txt
+
+# Получаем версию сборки, но для ветки. Для ветки нет инкримента, а просто номер build
+generate-non-semantic-version:
+  stage: fetch-version
+  except:
+    refs:
+      - main
+      - tags        
+  script:
+    - echo build-$CI_PIPELINE_ID > VERSION.txt    
+  artifacts:
+    paths:
+      - VERSION.txt
+
+# Собираем Docker Image
+# Помещаем в Registry (хранилище артефактов)
+docker-build:
+  stage: build
+  except:
+    refs:
+      - tags 
+  before_script:
+    - docker login registry.gitlab.com/microarch-ru/microservices/dotnet/basket -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+  script:
+    - docker build -t registry.gitlab.com/microarch-ru/microservices/dotnet/basket:$(cat VERSION.txt) .
+    - docker push registry.gitlab.com/microarch-ru/microservices/dotnet/basket:$(cat VERSION.txt)
+
+# Собираем Helm Chart
+# Помещаем в Registry (хранилище артефактов)
+# Это наш релиз
+helm-build:
+  stage: release
+  only:
+    refs:
+      - main
+  except:
+    refs:
+      - tags 
+  image:
+    name: alpine/helm:latest
+    entrypoint: [""]
+  before_script:
+    - helm registry login registry.gitlab.com/microarch-ru/microservices/dotnet/basket -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+  script:
+    - helm package ${CI_PROJECT_NAME} --version $(cat VERSION.txt) --app-version $(cat VERSION.txt)
+    - helm push ./${CI_PROJECT_NAME}-$(cat VERSION.txt).tgz oci://registry.gitlab.com/microarch-ru/microservices/dotnet/basket
+
+# Тэгируем main ветку номером релиза
+tag:
+  stage: tag
+  only:
+    refs:
+      - main
+  except:
+    refs:
+      - tags
+  image: node:latest    
+  script:
+    - npm i semantic-release @semantic-release/gitlab @semantic-release/exec
+    - npx semantic-release  
+
+# Разворачиваем релиз в Production (kubernetes)
+deploy:
+  stage: deploy
+  only:
+    refs:
+      - main
+  except:
+    refs:
+      - tags
+  extends: [.kube-context]
+  image:
+    name: "registry.gitlab.com/gitlab-org/cluster-integration/cluster-applications:v1.3.2"
+    entrypoint: ['']
+  script:
+    - export HELM_EXPERIMENTAL_OCI=1
+    - helm upgrade --install basket oci://registry.gitlab.com/microarch-ru/microservices/dotnet/basket/basket --version $(cat VERSION.txt)
