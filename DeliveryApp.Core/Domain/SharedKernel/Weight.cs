@@ -8,23 +8,30 @@ public sealed class Weight : ValueObject
 {
 	public int Value { get; }
 
-	private Weight() {}
+	protected Weight() {}
 
-	public Weight(int value)
+	protected Weight(int value)
 	{
-	    if(value <= 0) throw new ArgumentOutOfRangeException(value.ToString());
-
 	    Value = value;
 	}
 
-    public static bool operator <(Weight weight1, Weight weight2)
+	public static Result<Weight, Error> Create(int value)
+	{
+	    if(value <= 0) 
+			return GeneralErrors.ValueIsLowerThan(nameof(value), value, 0);
+
+		return new Weight(value);
+	}
+
+
+    public static bool operator < (Weight first, Weight second)
     {
-        return weight1.Value < weight2.Value;
+        return first.Value < second.Value;
     }
 
-    public static bool operator >(Weight weight1, Weight weight2)
+    public static bool operator > (Weight first, Weight second)
     {
-        return weight1.Value > weight2.Value;
+        return first.Value > second.Value;
     }
 
 	public override bool Equals(object obj)
@@ -34,6 +41,7 @@ public sealed class Weight : ValueObject
 
 	    return (w.Value == Value);
 	}
+
 
     [ExcludeFromCodeCoverage]
     protected override IEnumerable<IComparable> GetEqualityComponents()

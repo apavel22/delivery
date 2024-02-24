@@ -5,6 +5,24 @@ namespace Primitives;
 /// </summary>
 public static class GeneralErrors
 {
+    public static Error ValueIsOutOfRange(string name, int value, int min, int max)
+    {
+        if (string.IsNullOrEmpty(name)) throw new ArgumentException(name);
+        return new("value.is.out.of.range", $"Value {value} is out of range [{min},{max}] for {name}");
+    }
+
+    public static Error ValueIsLowerThan(string name, int value, int min)
+    {
+        if (string.IsNullOrEmpty(name)) throw new ArgumentException(name);
+        return new("value.is.lower", $"Value {value} is lower than {min} for {name}");
+    }
+
+    public static Error ValueIsGreaterThan(string name, int value, int max)
+    {
+        if (string.IsNullOrEmpty(name)) throw new ArgumentException(name);
+        return new("value.is.greater", $"Value {value} is greater than {max} for {name}");
+    }
+
     public static Error NotFound(long? id = null)
     {
         var forId = id == null ? "" : $" for Id '{id}'";
@@ -22,7 +40,7 @@ public static class GeneralErrors
         if (string.IsNullOrEmpty(name)) throw new ArgumentException(name);
         return new("value.is.required", $"Value is required for {name}");
     }
-        
+    
     public static Error InvalidLength(string name)
     {
         if (string.IsNullOrEmpty(name)) throw new ArgumentException(name);

@@ -9,15 +9,24 @@ public sealed class Location : ValueObject
 	public int X { get; }
 	public int Y { get; }
 
-	private Location() {}
+	protected Location() {}
 
-	public Location(int x, int y)
+	protected Location(int x, int y)
 	{
-		if(x < 0 || x > 10) throw new ArgumentOutOfRangeException(x.ToString());
-		if(y < 0 || y > 10) throw new ArgumentOutOfRangeException(y.ToString());
-
 		X = x;
 		Y = y;
+	}
+
+	public static Result<Location, Error> Create(int x, int y)
+	{
+		if(x < 0 || x > 10) 
+			return GeneralErrors.ValueIsOutOfRange(nameof(x), x, 0, 10);
+
+		if(y < 0 || y > 10) 
+			return GeneralErrors.ValueIsOutOfRange(nameof(y), y, 0, 10);
+
+		return new Location(x,y);
+	
 	}
 
 	public int Distance(Location l)	
@@ -26,13 +35,6 @@ public sealed class Location : ValueObject
 	}
 
 
-    [ExcludeFromCodeCoverage]
-    protected override IEnumerable<IComparable> GetEqualityComponents()
-    {
-        yield return X;
-        yield return Y;
-    }
-
 	public override bool Equals(object obj)
 	{
     	var l = obj as Location;
@@ -40,4 +42,11 @@ public sealed class Location : ValueObject
 
 	    return (l.X == X && l.Y == Y);
 	}
+
+    [ExcludeFromCodeCoverage]
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return X;
+        yield return Y;
+    }
 }
