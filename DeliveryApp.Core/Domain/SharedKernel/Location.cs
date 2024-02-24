@@ -19,11 +19,11 @@ public sealed class Location : ValueObject
 
 	public static Result<Location, Error> Create(int x, int y)
 	{
-		if(x < 0 || x > 10) 
-			return GeneralErrors.ValueIsOutOfRange(nameof(x), x, 0, 10);
+		if(x < 1 || x > 10) 
+			return GeneralErrors.ValueIsOutOfRange(nameof(x), x, 1, 10);
 
-		if(y < 0 || y > 10) 
-			return GeneralErrors.ValueIsOutOfRange(nameof(y), y, 0, 10);
+		if(y < 1 || y > 10) 
+			return GeneralErrors.ValueIsOutOfRange(nameof(y), y, 1, 10);
 
 		return new Location(x,y);
 	

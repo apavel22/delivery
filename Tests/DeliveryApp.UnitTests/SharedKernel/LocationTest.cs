@@ -22,8 +22,10 @@ public class LocationShould
     }
 
     [Theory]
+    [InlineData(0, 2)]
     [InlineData(-1, 2)]
     [InlineData(11, 2)]
+    [InlineData(2, 0)]
     [InlineData(2, -1)]
     [InlineData(2, 11)]
 

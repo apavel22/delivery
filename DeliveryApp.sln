@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryApp.Core", "DeliveryApp.Core\DeliveryApp.Core.csproj", "{A9288875-88E8-48B4-8368-8AD80E50CCC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryApp.UnitTests", "DeliveryApp.UnitTests\DeliveryApp.UnitTests.csproj", "{77D17A6A-A0BB-40A7-8FD9-3EF941ED093E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryApp.UnitTests", "Tests\DeliveryApp.UnitTests\DeliveryApp.UnitTests.csproj", "{77D17A6A-A0BB-40A7-8FD9-3EF941ED093E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryApp.Ui", "DeliveryApp.Ui\DeliveryApp.Ui.csproj", "{5743313D-9CC1-4F2D-9074-5882924E7BFE}"
 EndProject
