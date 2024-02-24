@@ -6,6 +6,10 @@ namespace DeliveryApp.Core.Domain.SharedKernel;
 
 public sealed class Weight : ValueObject
 {
+
+    public static readonly Weight MinWeight = new Weight(1);
+
+
 	public int Value { get; }
 
 	protected Weight() {}
@@ -17,8 +21,8 @@ public sealed class Weight : ValueObject
 
 	public static Result<Weight, Error> Create(int value)
 	{
-	    if(value <= 0) 
-			return GeneralErrors.ValueIsLowerThan(nameof(value), value, 0);
+	    if(value < MinWeight.Value) 
+			return GeneralErrors.ValueIsLowerThan(nameof(value), value, MinWeight.Value);
 
 		return new Weight(value);
 	}
@@ -33,15 +37,6 @@ public sealed class Weight : ValueObject
     {
         return first.Value > second.Value;
     }
-
-	public override bool Equals(object obj)
-	{
-    	var w = obj as Weight;
-	    if (w == null) 	return false;
-
-	    return (w.Value == Value);
-	}
-
 
     [ExcludeFromCodeCoverage]
     protected override IEnumerable<IComparable> GetEqualityComponents()

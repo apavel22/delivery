@@ -6,6 +6,10 @@ namespace DeliveryApp.Core.Domain.SharedKernel;
 
 public sealed class Location : ValueObject
 {
+
+    public static readonly Location MinLocation = new Location(1,1);
+    public static readonly Location MaxLocation = new Location(10,10);
+
 	public int X { get; }
 	public int Y { get; }
 
@@ -19,11 +23,11 @@ public sealed class Location : ValueObject
 
 	public static Result<Location, Error> Create(int x, int y)
 	{
-		if(x < 1 || x > 10) 
-			return GeneralErrors.ValueIsOutOfRange(nameof(x), x, 1, 10);
+		if(x < MinLocation.X || x > MaxLocation.X) 
+			return GeneralErrors.ValueIsOutOfRange(nameof(x), x, MinLocation.X, MaxLocation.X);
 
-		if(y < 1 || y > 10) 
-			return GeneralErrors.ValueIsOutOfRange(nameof(y), y, 1, 10);
+		if(y < MinLocation.Y || y > MaxLocation.Y) 
+			return GeneralErrors.ValueIsOutOfRange(nameof(y), y, MinLocation.Y, MaxLocation.Y);
 
 		return new Location(x,y);
 	
@@ -32,15 +36,6 @@ public sealed class Location : ValueObject
 	public int Distance(Location l)	
 	{
 		return Math.Abs(l.X - X) + Math.Abs(l.Y - Y);
-	}
-
-
-	public override bool Equals(object obj)
-	{
-    	var l = obj as Location;
-	    if (l == null) 	return false;
-
-	    return (l.X == X && l.Y == Y);
 	}
 
     [ExcludeFromCodeCoverage]
