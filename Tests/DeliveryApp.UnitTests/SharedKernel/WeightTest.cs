@@ -24,7 +24,7 @@ public class WeightShould
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void ReturnErrorWhenParamsIsCorrectOnCreated(int value)
+    public void ReturnErrorWhenParamsIsInCorrectOnCreated(int value)
     {
         //Arrange
         
