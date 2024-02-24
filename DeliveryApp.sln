@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4C5B5C4D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{B6FB4FD8-D312-4BC7-8C4B-29AD303A4CE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Primitives", "Primitives\Primitives.csproj", "{E37A2F21-B732-4176-A45E-137744D8CDC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Primitives", "Utils\Primitives\Primitives.csproj", "{E37A2F21-B732-4176-A45E-137744D8CDC4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts.RabbitMq", "Contracts.RabbitMq\Contracts.RabbitMq.csproj", "{16F2DB2D-B4CE-4313-BC0E-63B555526D8A}"
 EndProject

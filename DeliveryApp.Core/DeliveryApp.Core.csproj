@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Primitives\Primitives.csproj" />
+      <ProjectReference Include="..\Utils\Primitives\Primitives.csproj" />
     </ItemGroup>
 
 </Project>
