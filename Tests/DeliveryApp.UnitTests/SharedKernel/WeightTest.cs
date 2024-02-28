@@ -91,4 +91,66 @@ public class WeightShould
         //Assert
         result.Should().BeTrue();
     }
+
+    [Fact]
+    public void CanCompareMoreThenOrEqualMore()
+    {
+        //Arrange
+        var first = Weight.Create(10).Value;
+        var second = Weight.Create(5).Value;
+        
+        //Act
+        var result = first >= second;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void CanCompareMoreThenOrEqualEqual()
+    {
+        //Arrange
+        var first = Weight.Create(10).Value;
+        var second = Weight.Create(10).Value;
+        
+        //Act
+        var result = first >= second;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+
+
+
+    
+    [Fact]
+    public void CanCompareLessThenOrEqualLess()
+    {
+        //Arrange
+        var first = Weight.Create(5).Value;
+        var second = Weight.Create(10).Value;
+        
+        //Act
+        var result = first <= second;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void CanCompareLessThenOrEqualEqual()
+    {
+        //Arrange
+        var first = Weight.Create(5).Value;
+        var second = Weight.Create(5).Value;
+        
+        //Act
+        var result = first <= second;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+
+
+
 }
