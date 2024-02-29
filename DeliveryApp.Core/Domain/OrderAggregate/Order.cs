@@ -22,9 +22,14 @@ public class Order : Aggregate
         {
             return new($"{nameof(Order).ToLowerInvariant()}.cant.be.assigned.to.non.ready.courier", "Заказ не может быть назначен курьера. Курьер не готов взять заказ");
         }
+        public static Error OrderCantBeAssignedToSuchCourierByCapacity()
+        {
+            return new($"{nameof(Order).ToLowerInvariant()}.cant.be.assigned.to.courier.by.capacity", "Заказ не может быть назначен курьера. Курьер не сможет взять заказ из-за веса");
+        }
+
         public static Error OrderIsNotAssignedToCourier()
         {
-            return new($"{nameof(Order).ToLowerInvariant()}.is.not.assogned.to.cuorier", "Заказ не был назначен на курьера");
+            return new($"{nameof(Order).ToLowerInvariant()}.is.not.assigned.to.courier", "Заказ не был назначен на курьера");
         }
 
     }
@@ -56,6 +61,9 @@ public class Order : Aggregate
 	{
 		if(Status == Status.Completed) return Errors.OrderHasAlreadyCompleted();   	
 		if(Status == Status.Assigned) return Errors.OrderHasAlreadyAssigned();   	
+
+		if(!courier.Transport.CanWeight(Weight))
+			return Errors.OrderCantBeAssignedToSuchCourierByCapacity();
 
 		if(courier.InWork().IsSuccess == false)
 			return Errors.OrderCantBeAssignedToNonReadyCourier();   	

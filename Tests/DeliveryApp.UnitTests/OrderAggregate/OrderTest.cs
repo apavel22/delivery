@@ -94,8 +94,37 @@ public class OrderShould
 
         //Assert
         result.IsSuccess.Should().BeFalse();
+        result.Error.Code.Should().Be("order.cant.be.assigned.to.non.ready.courier");
+
         order.CourierId.Should().Be(Guid.Empty);
         order.Status.Should().Be(Status.Created);
+    }
+
+
+    [Fact]
+    public void CantAssignCourierByCapacity()
+    {
+        //Arrange
+
+        //Act
+    	var id = Guid.NewGuid();
+        var location = Location.Create(4,9);
+        var weight = Weight.Create(7);
+
+        var order = Order.Create(id, location.Value, weight.Value).Value;
+
+        var courier = DeliveryApp.Core.Domain.CourierAggregate.Courier.Create("Name", DeliveryApp.Core.Domain.CourierAggregate.Transport.Pedestrian).Value;
+        courier.StartWork();
+
+        // couier.pedestrian.transport.capacity = 1
+        // order.weight = 7
+
+        var result = order.Assigne(courier);
+
+        //Assert
+        result.IsSuccess.Should().BeFalse();
+        result.Error.Code.Should().Be("order.cant.be.assigned.to.courier.by.capacity");
+
     }
 
 

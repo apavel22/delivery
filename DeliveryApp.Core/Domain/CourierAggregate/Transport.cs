@@ -43,8 +43,6 @@ public class Transport : Entity<int>
 	}
 
 
-
-
     public bool CanWeight(Weight weight) 
     {
     	return weight <= Capacity;
