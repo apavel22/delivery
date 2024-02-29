@@ -24,6 +24,7 @@ public class SpeedShould
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
+    [InlineData(11)]
     public void ReturnErrorWhenParamsIsInCorrectOnCreated(int value)
     {
         //Arrange
@@ -63,4 +64,92 @@ public class SpeedShould
         //Assert
         result.Should().BeFalse();
     }
+
+    [Fact]
+    public void CanCompareMoreThen()
+    {
+        //Arrange
+        var first = Speed.Create(10).Value;
+        var second = Speed.Create(5).Value;
+        
+        //Act
+        var result = first > second;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+    
+    [Fact]
+    public void CanCompareLessThen()
+    {
+        //Arrange
+        var first = Speed.Create(5).Value;
+        var second = Speed.Create(10).Value;
+        
+        //Act
+        var result = first < second;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void CanCompareMoreThenOrEqualMore()
+    {
+        //Arrange
+        var first = Speed.Create(10).Value;
+        var second = Speed.Create(5).Value;
+        
+        //Act
+        var result = first >= second;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void CanCompareMoreThenOrEqualEqual()
+    {
+        //Arrange
+        var first = Speed.Create(10).Value;
+        var second = Speed.Create(10).Value;
+        
+        //Act
+        var result = first >= second;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+
+
+
+    
+    [Fact]
+    public void CanCompareLessThenOrEqualLess()
+    {
+        //Arrange
+        var first = Speed.Create(5).Value;
+        var second = Speed.Create(10).Value;
+        
+        //Act
+        var result = first <= second;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void CanCompareLessThenOrEqualEqual()
+    {
+        //Arrange
+        var first = Speed.Create(5).Value;
+        var second = Speed.Create(5).Value;
+        
+        //Act
+        var result = first <= second;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+
 }

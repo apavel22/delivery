@@ -108,7 +108,6 @@ public class OrderShould
     	var id = Guid.NewGuid();
         var location = Location.Create(4,9);
         var weight = Weight.Create(7);
-
         var order = Order.Create(id, location.Value, weight.Value).Value;
 
         // first courier
