@@ -38,6 +38,12 @@ public sealed class Location : ValueObject
 		return Math.Abs(l.X - X) + Math.Abs(l.Y - Y);
 	}
 
+    public static int operator - (Location first, Location second)
+    {
+        return first.Distance(second);
+    }
+
+
     [ExcludeFromCodeCoverage]
     protected override IEnumerable<IComparable> GetEqualityComponents()
     {

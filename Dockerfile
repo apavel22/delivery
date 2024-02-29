@@ -10,9 +10,12 @@ WORKDIR /src
 COPY "DeliveryApp.Ui/DeliveryApp.Ui.csproj" "DeliveryApp.Ui/DeliveryApp.Ui.csproj"
 COPY "DeliveryApp.Core/DeliveryApp.Core.csproj" "DeliveryApp.Core/DeliveryApp.Core.csproj"
 COPY "DeliveryApp.Infrastructure/DeliveryApp.Infrastructure.csproj" "DeliveryApp.Infrastructure/DeliveryApp.Infrastructure.csproj"
-COPY "DeliveryApp.UnitTests/DeliveryApp.UnitTests.csproj" "DeliveryApp.UnitTests/DeliveryApp.UnitTests.csproj"
-COPY "Primitives/Primitives.csproj" "Primitives/Primitives.csproj"
-COPY "Contracts.RabbitMq/Contracts.RabbitMq.csproj" "Contracts.RabbitMq/Contracts.RabbitMq.csproj"
+COPY "Tests/DeliveryApp.ComponentTests/DeliveryApp.ComponentTests.csproj" "Tests/DeliveryApp.ComponentTests/DeliveryApp.ComponentTests.csproj"
+COPY "Tests/DeliveryApp.FunctionalTests/DeliveryApp.FunctionalTests.csproj" "Tests/DeliveryApp.FunctionalTests/DeliveryApp.FunctionalTests.csproj"
+COPY "Tests/DeliveryApp.IntegrationTests/DeliveryApp.IntegrationTests.csproj" "Tests/DeliveryApp.IntegrationTests/DeliveryApp.IntegrationTests.csproj"
+COPY "Tests/DeliveryApp.UnitTests/DeliveryApp.UnitTests.csproj" "Tests/DeliveryApp.UnitTests/DeliveryApp.UnitTests.csproj"
+COPY "Utils/Primitives/Primitives.csproj" "Utils/Primitives/Primitives.csproj"
+COPY "Utils/Contracts.RabbitMq/Contracts.RabbitMq.csproj" "Utils/Contracts.RabbitMq/Contracts.RabbitMq.csproj"
 COPY "NuGet.config" "NuGet.config"
 
 # run restore over API project - this pulls restore over the dependent projects as well

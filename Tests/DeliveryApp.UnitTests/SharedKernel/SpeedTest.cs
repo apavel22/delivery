@@ -5,7 +5,7 @@ using Xunit;
 
 namespace DeliveryApp.UnitTests.SharedKernel;
 
-public class WeightShould
+public class SpeedShould
 {
     [Fact]
     public void BeCorrectWhenParamsIsCorrectOnCreated()
@@ -13,35 +13,36 @@ public class WeightShould
         //Arrange
         
         //Act
-        var weight = Weight.Create(100);
+        var speed = Speed.Create(10);
 
         //Assert
-        weight.IsSuccess.Should().BeTrue();
-        weight.Value.Value.Should().Be(100);
+        speed.IsSuccess.Should().BeTrue();
+        speed.Value.Value.Should().Be(10);
     }
 
 
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
+    [InlineData(11)]
     public void ReturnErrorWhenParamsIsInCorrectOnCreated(int value)
     {
         //Arrange
         
         //Act
-        var weight = Weight.Create(value);
+        var speed = Speed.Create(value);
 
         //Assert
-        weight.IsSuccess.Should().BeFalse();
-        weight.Error.Should().NotBeNull();
+        speed.IsSuccess.Should().BeFalse();
+        speed.Error.Should().NotBeNull();
     }
     
     [Fact]
     public void BeEqualWhenAllPropertiesIsEqual()
     {
         //Arrange
-        var first = Weight.Create(10).Value;
-        var second = Weight.Create(10).Value;
+        var first = Speed.Create(10).Value;
+        var second = Speed.Create(10).Value;
         
         //Act
         var result = first == second;
@@ -54,8 +55,8 @@ public class WeightShould
     public void BeNotEqualWhenAllPropertiesIsEqual()
     {
         //Arrange
-        var first = Weight.Create(10).Value;
-        var second = Weight.Create(5).Value;
+        var first = Speed.Create(10).Value;
+        var second = Speed.Create(5).Value;
         
         //Act
         var result = first == second;
@@ -63,13 +64,13 @@ public class WeightShould
         //Assert
         result.Should().BeFalse();
     }
-    
+
     [Fact]
     public void CanCompareMoreThen()
     {
         //Arrange
-        var first = Weight.Create(10).Value;
-        var second = Weight.Create(5).Value;
+        var first = Speed.Create(10).Value;
+        var second = Speed.Create(5).Value;
         
         //Act
         var result = first > second;
@@ -82,8 +83,8 @@ public class WeightShould
     public void CanCompareLessThen()
     {
         //Arrange
-        var first = Weight.Create(5).Value;
-        var second = Weight.Create(10).Value;
+        var first = Speed.Create(5).Value;
+        var second = Speed.Create(10).Value;
         
         //Act
         var result = first < second;
@@ -96,8 +97,8 @@ public class WeightShould
     public void CanCompareMoreThenOrEqualMore()
     {
         //Arrange
-        var first = Weight.Create(10).Value;
-        var second = Weight.Create(5).Value;
+        var first = Speed.Create(10).Value;
+        var second = Speed.Create(5).Value;
         
         //Act
         var result = first >= second;
@@ -110,8 +111,8 @@ public class WeightShould
     public void CanCompareMoreThenOrEqualEqual()
     {
         //Arrange
-        var first = Weight.Create(10).Value;
-        var second = Weight.Create(10).Value;
+        var first = Speed.Create(10).Value;
+        var second = Speed.Create(10).Value;
         
         //Act
         var result = first >= second;
@@ -127,8 +128,8 @@ public class WeightShould
     public void CanCompareLessThenOrEqualLess()
     {
         //Arrange
-        var first = Weight.Create(5).Value;
-        var second = Weight.Create(10).Value;
+        var first = Speed.Create(5).Value;
+        var second = Speed.Create(10).Value;
         
         //Act
         var result = first <= second;
@@ -141,8 +142,8 @@ public class WeightShould
     public void CanCompareLessThenOrEqualEqual()
     {
         //Arrange
-        var first = Weight.Create(5).Value;
-        var second = Weight.Create(5).Value;
+        var first = Speed.Create(5).Value;
+        var second = Speed.Create(5).Value;
         
         //Act
         var result = first <= second;
@@ -150,7 +151,5 @@ public class WeightShould
         //Assert
         result.Should().BeTrue();
     }
-
-
 
 }

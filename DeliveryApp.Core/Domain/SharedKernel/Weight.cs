@@ -6,7 +6,6 @@ namespace DeliveryApp.Core.Domain.SharedKernel;
 
 public sealed class Weight : ValueObject
 {
-
     public static readonly Weight MinWeight = new Weight(1);
 
 
@@ -27,6 +26,17 @@ public sealed class Weight : ValueObject
 		return new Weight(value);
 	}
 
+
+    public static bool operator <= (Weight first, Weight second)
+    {
+        return first.Value <= second.Value;
+    }
+
+
+    public static bool operator >= (Weight first, Weight second)
+    {
+        return first.Value >= second.Value;
+    }
 
     public static bool operator < (Weight first, Weight second)
     {

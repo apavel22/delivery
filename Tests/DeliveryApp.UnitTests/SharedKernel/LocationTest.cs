@@ -87,6 +87,36 @@ public class LocationShould
     }
 
     [Fact]
+    public void CalcCorrectDistanceWithOperator()
+    {
+        //Arrange
+        var first = Location.Create(1,1).Value;
+        var second = Location.Create(5,5).Value;
+        
+        //Act
+        var result = first - second == 8;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+
+
+    [Fact]
+    public void CalcCorrectDistanceWithOperatorDisplacement()
+    {
+        //Arrange
+        var first = Location.Create(1,1).Value;
+        var second = Location.Create(5,5).Value;
+        
+        //Act
+        var result = second - first == 8;
+
+        //Assert
+        result.Should().BeTrue();
+    }
+
+
+    [Fact]
     public void BeZeroDisplacementWhenLocationsAreEqual()
     {
         //Arrange
