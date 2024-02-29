@@ -24,12 +24,12 @@ public class Transport : Entity<int>
 		public static Error TransportIsWrong(int id)
         {
             return new($"{nameof(Transport).ToLowerInvariant()}.is.wrong", 
-                $"Не верное значение {id}. Допустимые значения: { nameof(Transport).ToLowerInvariant()}: { string.Join(",", List().Select(s => s.Id))}");
+                $"РќРµ РІРµСЂРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ {id}. Р”РѕРїСѓСЃС‚РёРјС‹Рµ Р·РЅР°С‡РµРЅРёСЏ: { nameof(Transport).ToLowerInvariant()}: { string.Join(",", List().Select(s => s.Id))}");
         }
 		public static Error TransportIsWrong(string name)
         {
             return new($"{nameof(Transport).ToLowerInvariant()}.is.wrong", 
-                $"Не верное значение {name}. Допустимые значения: { nameof(Transport).ToLowerInvariant()}: { string.Join(",", List().Select(s => s.Name))}");
+                $"РќРµ РІРµСЂРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ {name}. Р”РѕРїСѓСЃС‚РёРјС‹Рµ Р·РЅР°С‡РµРЅРёСЏ: { nameof(Transport).ToLowerInvariant()}: { string.Join(",", List().Select(s => s.Name))}");
         }
     }
 
