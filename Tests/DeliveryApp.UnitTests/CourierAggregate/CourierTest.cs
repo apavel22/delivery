@@ -259,51 +259,55 @@ public class CourierShould
         
         //Act
         var courier = Courier.Create("Name", Transport.Car).Value;
-        var location = Location.Create(1,4).Value;
+        var location = Location.Create(1, 3).Value;
 
         var result = courier.Move(location);
 
         result.IsSuccess.Should().BeTrue();
-        courier.Location.Should().Be(Location.Create(1,4).Value);
+        courier.Location.Should().Be(location);
+
     }
 
     [Fact]
-    public void MoveToInTwoStepsFirstStep()
+    public void MoveToCorrectBySteps()
     {
         //Arrange
         
         //Act
-        var courier = Courier.Create("Name", Transport.Car).Value;
-        var location = Location.Create(1,6).Value;
 
+        var courier = Courier.Create("Name", Transport.Car).Value;
+
+        var location = Location.Create(3,9).Value;
+
+        // speed = 4
+        // first step
+        // (1,1) -> (3,3)
         var result = courier.Move(location);
 
         result.IsSuccess.Should().BeTrue();
-        courier.Location.Should().Be(Location.Create(1,5).Value);
-    }
+        courier.Location.Should().Be(Location.Create(3,3).Value);
 
-
-    [Fact]
-    public void MoveToInTwoStepsSecondStep()
-    {
-        //Arrange
-        
-        //Act
-        var courier = Courier.Create("Name", Transport.Car).Value;
-        var location = Location.Create(1,6).Value;
-
-        courier.Move(location);
-        var result = courier.Move(location);
-        
+        // second step
+        // (3,3) - > ( 3, 7)
+        result = courier.Move(location);
         result.IsSuccess.Should().BeTrue();
-        courier.Location.Should().Be(Location.Create(1,6).Value);
+        courier.Location.Should().Be(Location.Create(3,7).Value);
+
+        // third step
+        // (3,7) - > ( 3, 9)
+        result = courier.Move(location);
+        result.IsSuccess.Should().BeTrue();
+        courier.Location.Should().Be(Location.Create(3,9).Value);
+
     }
+
 
 
     [Theory]
     [InlineData(1,1)]
     [InlineData(3,1)]
     [InlineData(1,3)]
+    [InlineData(7,9)]
     public void SpeedShouldBeEqualToQtyOfSteps(int x, int y)
     {
         //Arrange
