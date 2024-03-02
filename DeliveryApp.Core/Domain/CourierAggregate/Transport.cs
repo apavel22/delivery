@@ -4,14 +4,23 @@ using Primitives;
 
 namespace DeliveryApp.Core.Domain.CourierAggregate;
 
+/// <summary>
+/// Транспорт
+/// - название, скорость и грузоподъемность
+/// - только предопределенный траспорт
+/// </summary>
 public class Transport : Entity<int>
 {
-    public static readonly Transport Pedestrian  = new(1, nameof(Pedestrian).ToLowerInvariant(), Speed.Create(1).Value, Weight.Create(1).Value);
-    public static readonly Transport Bicycle   = new(2, nameof(Bicycle).ToLowerInvariant(), Speed.Create(2).Value, Weight.Create(4).Value);
-    public static readonly Transport Scooter    = new(3, nameof(Scooter).ToLowerInvariant(), Speed.Create(3).Value, Weight.Create(6).Value);
-    public static readonly Transport Car     = new(4, nameof(Car).ToLowerInvariant(), Speed.Create(4).Value, Weight.Create(8).Value);
+    public static readonly Transport Pedestrian     = new(1, nameof(Pedestrian).ToLowerInvariant(), Speed.Create(1).Value, Weight.Create(1).Value);
+    public static readonly Transport Bicycle        = new(2, nameof(Bicycle).ToLowerInvariant(),    Speed.Create(2).Value, Weight.Create(4).Value);
+    public static readonly Transport Scooter        = new(3, nameof(Scooter).ToLowerInvariant(),    Speed.Create(3).Value, Weight.Create(6).Value);
+    public static readonly Transport Car            = new(4, nameof(Car).ToLowerInvariant(),        Speed.Create(4).Value, Weight.Create(8).Value);
 
 
+    /// <summary>
+    /// Название транспорта
+    /// - всегда будет в lower case
+    /// </summary>
     public string Name { get; protected set; }
     
     public Speed Speed { get; protected set; }
@@ -35,15 +44,18 @@ public class Transport : Entity<int>
 
 	protected Transport() {}
 
+    /// <summary>
+    /// ctor:
+    /// </summary>
 	protected Transport(int id, string name, Speed speed, Weight capacity) : base(id)
 	{
-	    Name = name;
+	    Name = name.ToLowerInvariant();
 	    Speed = speed;
 	    Capacity = capacity;
 	}
 
 
-    public bool CanWeight(Weight weight) 
+    public bool CanCarry(Weight weight) 
     {
     	return weight <= Capacity;
     }
@@ -56,6 +68,10 @@ public class Transport : Entity<int>
         yield return Car ;
     }
 
+    /// <summary>
+    /// Тransport by name
+    /// </summary>
+    /// <returns></returns>
 	public static Result<Transport, Error> FromName(string name)
     {
         var transport = List()
@@ -64,6 +80,10 @@ public class Transport : Entity<int>
         return transport;
     }
 
+    /// <summary>
+    /// Transport by id
+    /// </summary>
+    /// <returns></returns>
     public static Result<Transport, Error> From(int id)
     {
         var transport = List().SingleOrDefault(s => s.Id == id);

@@ -4,6 +4,10 @@ using Primitives;
 
 namespace DeliveryApp.Core.Domain.SharedKernel;
 
+/// <summary>
+/// Location (x,y)
+/// - MinLocation <= (x,y) <= MaxLocation()
+/// </summary>
 public sealed class Location : ValueObject
 {
 
@@ -15,12 +19,22 @@ public sealed class Location : ValueObject
 
 	protected Location() {}
 
-	protected Location(int x, int y)
+	/// <summary>
+	/// ctor:
+	/// </summary>
+	protected Location(int x, int y) : this()
 	{
 		X = x;
 		Y = y;
 	}
 
+	/// <summary>
+	/// Create location
+	/// </summary>
+	/// <remarks>
+	/// - MinLocation <= (x,y) <= MaxLocation()
+	/// </remarks>
+	/// <returns></returns>
 	public static Result<Location, Error> Create(int x, int y)
 	{
 		if(x < MinLocation.X || x > MaxLocation.X) 
@@ -30,15 +44,15 @@ public sealed class Location : ValueObject
 			return GeneralErrors.ValueIsOutOfRange(nameof(y), y, MinLocation.Y, MaxLocation.Y);
 
 		return new Location(x,y);
-	
 	}
 
-	public int Distance(Location l)	
+	public Result<int, Error> Distance(Location location)	
 	{
-		return Math.Abs(l.X - X) + Math.Abs(l.Y - Y);
+		if(location == null) return GeneralErrors.ValueIsRequired(nameof(location));
+		return Math.Abs(location.X - X) + Math.Abs(location.Y - Y);
 	}
 
-    public static int operator - (Location first, Location second)
+    public static Result<int, Error> operator - (Location first, Location second)
     {
         return first.Distance(second);
     }

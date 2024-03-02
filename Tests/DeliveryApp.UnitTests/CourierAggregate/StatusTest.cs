@@ -63,7 +63,7 @@ public class StatusShould
     }
 
     [Theory]
-    [InlineData(7,"some")]
+    [InlineData(-7,"some")]
     public void CanNotBeFoundByWrongName(int id, string name)
     {
         //Arrange

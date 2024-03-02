@@ -4,9 +4,12 @@ using Primitives;
 
 namespace DeliveryApp.Core.Domain.CourierAggregate;
 
+/// <summary>
+/// Курьер
+/// </summary>
 public class Courier : Aggregate
 {
-    public static class Errors
+	public static class Errors
     {
 		public static Error CourierHasAlreadyStarted()
         {
@@ -33,7 +36,7 @@ public class Courier : Aggregate
             return new($"{nameof(Courier).ToLowerInvariant()}.has.already.busy", "Курьер уже выполняет заказ");
         }
 
-		public static Error CourierHasInvalidStatusToAssignToOrder(Status status)
+		public static Error CourierHasInvalidStatusBusy(Status status)
         {
             return new($"{nameof(Courier).ToLowerInvariant()}.has.invalid.status.to.assign.to.order", "Курьер не может брать заказ из Status {status}");
         }
@@ -48,6 +51,9 @@ public class Courier : Aggregate
 
     protected Courier() {}
 
+	/// <summary>
+	/// ctor:
+	/// </summary>
     protected Courier(Guid id, string name, Transport transport, Location location, Status status) 
     {
     	Id = id;
@@ -57,16 +63,35 @@ public class Courier : Aggregate
     	Location = location;
     }
 
+	/// <summary>
+	/// Создать курьера
+	/// </summary>
+	/// <remarks>
+	/// - def location: (1,1)
+	/// - def status NA
+	/// </remarks>
+	/// <param name="name">Имя</param>
+	/// <param name="transport">Транспорт</param>
+	/// <returns></returns>
     public static Result<Courier, Error> Create(string name, Transport transport)
     {
-    	var id = Guid.NewGuid();
+		if(transport == null) return GeneralErrors.ValueIsInvalid(nameof(transport));
     	if (string.IsNullOrEmpty(name)) return GeneralErrors.ValueIsInvalid(nameof(name));
 
-    	return new Courier(id, name, transport, Location.Create(1,1).Value, Status.NotAvailable);
+    	var id = Guid.NewGuid();
+		var defaultLocation = Location.Create(1,1).Value;
+		var defaultStatus = Status.NotAvailable;
+
+    	return new Courier(id, name, transport, defaultLocation, defaultStatus);
     }
 
 
-    public Result<object, Error> StartWork()
+	/// <summary>
+	/// Start to work:
+	/// can start from NA status only
+	/// </summary>
+	/// <returns></returns>
+	public Result<object, Error> StartWork()
     {
 		 if (Status == Status.Ready) return Errors.CourierHasAlreadyStarted();   	
 		 if (Status != Status.NotAvailable) return Errors.CourierHasInvalidStatusToStartWork(Status);   	
@@ -76,6 +101,11 @@ public class Courier : Aggregate
 		 return new object();
     }
 
+	/// <summary>
+	/// Stop work
+	/// can stop from Ready only
+	/// </summary>
+	/// <returns></returns>
     public Result<object, Error> StopWork()
     {
 		 if (Status == Status.NotAvailable) return Errors.CourierHasAlreadyStopped();   	
@@ -87,31 +117,64 @@ public class Courier : Aggregate
     }
 
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
     public Result<object, Error> InWork()
     {
 		 if (Status == Status.Busy) return Errors.CourierHasAlreadyBusy();   	
-		 if (Status != Status.Ready) return Errors.CourierHasInvalidStatusToAssignToOrder(Status);   	
+		 if (Status != Status.Ready) return Errors.CourierHasInvalidStatusBusy(Status);   	
 
 		 Status = Status.Busy;
 
 		 return new object();
     }
 
+	/// <summary>
+	/// За сколько "времени/шагов" можно переместитья в location?
+	/// </summary>
+	/// <remarks>
+	/// - время зависит от скорости транспорта
+	/// - время целое, но с запасом: 8/3 = 3 шага, а не 2 если делить нацело
+	/// - distance <= time* speed
+	/// </remarks>
+	/// <param name="location"></param>
+	/// <returns></returns>
     public Result<int, Error> CalculateTimeToPoint(Location location)
     {
-    	int distance = Location - location;
+		if(location == null) return GeneralErrors.ValueIsRequired(nameof(location));
+
+    	int distance = (Location - location).Value;
+
+		// уже на месте?
     	if(distance == 0) return 0;
 
     	int time = distance / Transport.Speed.Value;
 
-    	// norm +1 for fractional
+    	// с запасом: time+1 если не делится нацело
     	if( time * Transport.Speed.Value < distance) time++;
 
     	return time;
 	}
 
+	/// <summary>
+	/// Переместиться в сторону location
+	/// </summary>
+	/// <remarks>
+	/// - может за один раз не добраться до location
+	/// - всего нужно CalculateTimeToPoint чтобы попасть в location
+	/// - учитывается скорость транспорта
+	/// - сначала перемещается по X, потом по Y
+	/// </remarks>
+	/// <example>
+	/// </example>
+	/// <param name="to"></param>
+	/// <returns></returns>
     public Result<object, Error> Move(Location to)
     {
+		if(to == null) return GeneralErrors.ValueIsRequired(nameof(to));
+
     	var distance_x = Math.Abs(Location.X - to.X);
     	var distance_y = Math.Abs(Location.Y - to.Y);
 
@@ -147,5 +210,4 @@ public class Courier : Aggregate
 
     	return new object();
 	}
-
 }

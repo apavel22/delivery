@@ -29,7 +29,7 @@ public class LocationShould
     [InlineData(2, -1)]
     [InlineData(2, 11)]
 
-    public void ReturnErrorWhenParamsIsCorrectOnCreated(int x, int y)
+    public void ReturnErrorWhenParamsIsInCorrectOnCreated(int x, int y)
     {
         //Arrange
         
@@ -78,40 +78,19 @@ public class LocationShould
         //Arrange
         var first = Location.Create(1,1).Value;
         var second = Location.Create(5,5).Value;
+        var resultDistance = 8;
         
         //Act
-        var result = first.Distance(second) == 8;
-
-        //Assert
+        var result = first.Distance(second).Value == resultDistance;
         result.Should().BeTrue();
-    }
 
-    [Fact]
-    public void CalcCorrectDistanceWithOperator()
-    {
-        //Arrange
-        var first = Location.Create(1,1).Value;
-        var second = Location.Create(5,5).Value;
-        
-        //Act
-        var result = first - second == 8;
-
-        //Assert
+        result = (first - second).Value == resultDistance;
         result.Should().BeTrue();
-    }
 
+        result = first.Distance(second).Value == second.Distance(first).Value;
+        result.Should().BeTrue();
 
-    [Fact]
-    public void CalcCorrectDistanceWithOperatorDisplacement()
-    {
-        //Arrange
-        var first = Location.Create(1,1).Value;
-        var second = Location.Create(5,5).Value;
-        
-        //Act
-        var result = second - first == 8;
-
-        //Assert
+        result = (first-second).Value == (second-first).Value;
         result.Should().BeTrue();
     }
 
@@ -122,27 +101,11 @@ public class LocationShould
         //Arrange
         var first = Location.Create(3,4).Value;
         var second = Location.Create(3,4).Value;
-        
+ 
         //Act
-        var result = first.Distance(second) == 0;
+        var result = first.Distance(second).Value == 0;
 
         //Assert
         result.Should().BeTrue();
     }
-
-
-    [Fact]
-    public void BeDisplacementPropertyOfDistance()
-    {
-        //Arrange
-        var first = Location.Create(1,1).Value;
-        var second = Location.Create(5,5).Value;
-        
-        //Act
-        var result = first.Distance(second) == second.Distance(first);
-
-        //Assert
-        result.Should().BeTrue();
-    }
-
 }

@@ -6,6 +6,9 @@ using Primitives;
 
 namespace DeliveryApp.Core.Domain.OrderAggregate;
 
+/// <summary>
+/// Заказ
+/// </summary>
 public class Order : Aggregate
 {
     public static class Errors
@@ -35,26 +38,44 @@ public class Order : Aggregate
     }
 
 
-    public virtual Guid CourierId { get; protected set; }
+    public virtual Guid? CourierId { get; protected set; }
 	public virtual Status Status  { get; protected set; }
 	public virtual Location Location { get; protected set; }
 	public virtual Weight Weight { get; protected set; }
 
 	protected Order() {}
-	protected Order(Guid id, Location location, Weight weight)
+
+	/// <summary>
+	/// ctor:
+	/// </summary>
+	protected Order(Guid id, Location location, Weight weight, Status status)
 	{
 		Id = id;
 		Location = location;
 		Weight = weight;
 		CourierId = Guid.Empty;
-		Status = Status.Created;
+		Status = status;
 	}
 
+	/// <summary>
+	/// Создать заказ (вес и location)
+	/// - def status: Created
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="location"></param>
+	/// <param name="weight"></param>
+	/// <returns></returns>
 	public static Result<Order, Error> Create(Guid id, Location location, Weight weight)
 	{
     	if (id == Guid.Empty) return GeneralErrors.ValueIsInvalid(nameof(id));
+		if (location == null) return GeneralErrors.ValueIsRequired(nameof(location));
+		if (weight == null) return GeneralErrors.ValueIsRequired(nameof(weight));
 
-		return new Order(id, location, weight);
+
+    	// todo: location == null, weight == null
+
+
+		return new Order(id, location, weight, Status.Created);
 	}
 
 	public Result<object, Error> Assigne(Courier courier)
@@ -62,7 +83,7 @@ public class Order : Aggregate
 		if(Status == Status.Completed) return Errors.OrderHasAlreadyCompleted();   	
 		if(Status == Status.Assigned) return Errors.OrderHasAlreadyAssigned();   	
 
-		if(!courier.Transport.CanWeight(Weight))
+		if(!courier.Transport.CanCarry(Weight))
 			return Errors.OrderCantBeAssignedToSuchCourierByCapacity();
 
 		if(courier.InWork().IsSuccess == false)

@@ -150,7 +150,4 @@ public class WeightShould
         //Assert
         result.Should().BeTrue();
     }
-
-
-
 }
