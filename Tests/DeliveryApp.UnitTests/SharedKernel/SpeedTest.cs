@@ -126,4 +126,18 @@ public class SpeedShould
         //Assert
         result.Should().BeTrue();
     }
+
+    [Fact]
+    public void ToIntConversion()
+    {
+        //Arrange
+        
+        //Act
+        var speed = Speed.Create(10).Value;
+        int value = speed;
+
+        //Assert
+        value.Should().Be(10);
+    }
+
 }

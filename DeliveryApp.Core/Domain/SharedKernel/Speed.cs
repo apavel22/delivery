@@ -68,6 +68,11 @@ public sealed class Speed : ValueObject
     }
 
 
+	public static implicit operator int(Speed value)
+    {
+		return value.Value;
+    }
+
     [ExcludeFromCodeCoverage]
     protected override IEnumerable<IComparable> GetEqualityComponents()
     {
