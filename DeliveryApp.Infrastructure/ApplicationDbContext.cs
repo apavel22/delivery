@@ -12,8 +12,8 @@ namespace DeliveryApp.Infrastructure;
 
 public class ApplicationDbContext : DbContext //, IUnitOfWork
 {
-//	public DbSet<Order> Orders { get; set; }
-//	public DbSet<Courier> Couriers { get; set; }
+	public DbSet<Order> Orders { get; set; }
+	public DbSet<Courier> Couriers { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

@@ -23,7 +23,7 @@ public class BaseRepositoryTestsShould: IAsyncLifetime
     /// <remarks>По сути это Docker контейнер с Postgres</remarks>
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithImage("postgres:14.7")
-        .WithDatabase("good")
+        .WithDatabase("delivery")
         .WithUsername("username")
         .WithPassword("secret")
         .WithCleanUp(true)

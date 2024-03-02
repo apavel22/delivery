@@ -1,7 +1,38 @@
+using DeliveryApp.Core.Domain.CourierAggregate;
+using Primitives;
 
-/*
-    Courier Add(Courier courier); // Добавить курьера
-    void Update(Courier courier); // Обновить курьера
-    Task GetAsync(Guid courierId); //Получить курьера
-    IEnumerable GetAllActive(); // Получить всех свободных курьеров
-*/
+namespace DeliveryApp.Core.Ports;
+
+/// <summary>
+/// Р РµРїРѕР·РёС‚РѕСЂРёР№ РґР»СЏ РљСѓСЂСЊРµСЂР°
+/// </summary>
+public interface ICourierRepository : IRepository<Courier>
+{
+
+    /// <summary>
+    /// Р”РѕР±Р°РІРёС‚СЊ РєСѓСЂСЊРµСЂР°
+    /// </summary>
+    /// <param name="courier"></param>
+    /// <returns></returns>
+    Courier Add(Courier courier);
+
+    /// <summary>
+    /// РћР±РЅРѕРІРёС‚СЊ РєСѓСЂСЊРµСЂР°
+    /// </summary>
+    /// <param name="courier"></param>
+    void Update(Courier courier);
+
+    /// <summary>
+    /// РџРѕР»СѓС‡РёС‚СЊ РєСѓСЂСЊРµСЂР° РїРѕ Id
+    /// </summary>
+    /// <param name="courierId"></param>
+    /// <returns></returns>
+    Task<Courier> GetByIdAsync(Guid courierId); 
+
+    /// <summary>
+    /// РџРѕР»СѓС‡РёС‚СЊ РІСЃРµС… Ready
+    /// </summary>
+    /// <returns></returns>
+    Task<IEnumerable<Courier>> GetAllReadyAsync();
+}
+
