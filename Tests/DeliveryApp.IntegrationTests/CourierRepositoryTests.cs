@@ -18,13 +18,6 @@ namespace DeliveryApp.IntegrationTests;
 public class CourierRepositoryTestsShould: BaseRepositoryTestsShould
 {
     [Fact]
-    public async void CanInitContainers()
-    {
-    	var result = true;
-        result.Should().BeTrue();
-    }
-
-    [Fact]
     public async void CanAddCourier()
     {
         //Arrange
@@ -49,7 +42,7 @@ public class CourierRepositoryTestsShould: BaseRepositoryTestsShould
     public async void CanUpdateCourier()
     {
     	// Arrange
-        var transport = Transport.Pedestrian;
+        var transport = Transport.Car;
         var data = Courier.Create("Name 1", transport).Value;
 
         ICourierRepository repository = new CourierRepository(_context);
@@ -67,10 +60,23 @@ public class CourierRepositoryTestsShould: BaseRepositoryTestsShould
         //Assert
         var dataFromDb = await repository.GetByIdAsync(data.Id);
         data.Should().BeEquivalentTo(dataFromDb);
+
+
+        //Act
+        to = Location.Create(3,3).Value;
+        data.Move(to);
+        
+        //Act
+        repository.Update(data);
+        
+        //Assert
+        dataFromDb = await repository.GetByIdAsync(data.Id);
+        data.Should().BeEquivalentTo(dataFromDb);
+
     }
 
     [Fact]
-    public async void CanGetallReady()
+    public async void CanGetAllReady()
     {
     	// Arrange
         var transport = Transport.Pedestrian;

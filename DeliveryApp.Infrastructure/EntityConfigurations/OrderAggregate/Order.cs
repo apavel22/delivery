@@ -47,7 +47,6 @@ public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
             .HasForeignKey(entity => entity.CourierId)
             .HasPrincipalKey(courier => courier.Id);
 
-
             
 		builder.HasOne(entity => entity.Status)
             .WithMany()

@@ -53,7 +53,7 @@ public class Order : Aggregate
 		Id = id;
 		Location = location;
 		Weight = weight;
-		CourierId = Guid.Empty;
+		CourierId = null;
 		Status = status;
 	}
 
