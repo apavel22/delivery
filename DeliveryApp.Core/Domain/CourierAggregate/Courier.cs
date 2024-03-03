@@ -40,8 +40,6 @@ public class Courier : Aggregate
         {
             return new($"{nameof(Courier).ToLowerInvariant()}.has.invalid.status.to.assign.to.order", "Курьер не может брать заказ из Status {status}");
         }
-
-
     }
 
     public virtual string Name { get; protected set; }

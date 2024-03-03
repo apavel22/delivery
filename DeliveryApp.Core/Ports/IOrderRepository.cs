@@ -32,6 +32,6 @@ public interface IOrderRepository : IRepository<Order>
     /// Получить все неаспределенные заказы
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<Order>> GetAllUnassignedAsync();
+    IEnumerable<Order> GetAllUnassigned();
 }
 

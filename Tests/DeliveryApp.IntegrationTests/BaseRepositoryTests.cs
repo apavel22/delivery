@@ -15,7 +15,7 @@ namespace DeliveryApp.IntegrationTests;
 
 public class BaseRepositoryTestsShould: IAsyncLifetime
 {
-    private ApplicationDbContext _context;
+    protected ApplicationDbContext _context;
 
     /// <summary>
     /// Настройка Postgres из библиотеки TestContainers
@@ -60,6 +60,4 @@ public class BaseRepositoryTestsShould: IAsyncLifetime
     {
         await _postgreSqlContainer.DisposeAsync().AsTask();
     }
-
-
 }

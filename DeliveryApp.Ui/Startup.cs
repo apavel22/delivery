@@ -1,5 +1,10 @@
-using DeliveryApp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+
+using DeliveryApp.Infrastructure;
+
+using DeliveryApp.Core.Ports;
+using DeliveryApp.Infrastructure.Adapters.Postgres;
+
 
 
 namespace DeliveryApp.Ui;
@@ -41,8 +46,8 @@ public class Startup
         );
 
         //Postgres
-//!        services.AddTransient<ICourierRepository, CourierRepository>();
-//!        services.AddTransient<IOrderRepository, OrderRepository>();
+        services.AddTransient<ICourierRepository, CourierRepository>();
+        services.AddTransient<IOrderRepository, OrderRepository>();
 
 
         //MediatR Commands

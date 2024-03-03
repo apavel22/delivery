@@ -33,6 +33,6 @@ public interface ICourierRepository : IRepository<Courier>
     /// Получить всех Ready
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<Courier>> GetAllReadyAsync();
+    IEnumerable<Courier> GetAllReady();
 }
 

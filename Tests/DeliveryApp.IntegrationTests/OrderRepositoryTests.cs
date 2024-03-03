@@ -5,8 +5,6 @@ using DeliveryApp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 using FluentAssertions;
-
-
 using Xunit;
 
 namespace DeliveryApp.IntegrationTests;

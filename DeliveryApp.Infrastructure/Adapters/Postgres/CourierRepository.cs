@@ -22,35 +22,49 @@ public class CourierRepository : ICourierRepository
 
     public Courier Add(Courier data)
     {
-//        _dbContext.Attach(basket.Status);
-        return _dbContext.Couriers.Add(data).Entity;
+        _dbContext.Attach(data.Status);
+        _dbContext.Attach(data.Transport);
+
+        var dataOut = _dbContext.Couriers.Add(data).Entity;
+
+        _dbContext.SaveChanges();
+
+        return dataOut;
     }
 
 
     public void Update(Courier data)
     {
-//        _dbContext.Attach(basket.Status);
+        _dbContext.Attach(data.Status);
+        _dbContext.Attach(data.Transport);
         _dbContext.Entry(data).State = EntityState.Modified;
+
+        _dbContext.SaveChanges();
     }
 
     public async Task<Courier> GetByIdAsync(Guid Id)
     {
         var data = await _dbContext
             .Couriers
-//            .Include(x => x.Address)
-//            .Include(x => x.TimeSlot)
-//            .Include(x => x.Status)
+                .Include(x => x.Status)
+	            .Include(x => x.Transport)
             .FirstOrDefaultAsync(o => o.Id == Id);
-
+/*
+		if (data == null)
+		{
+			data = _dbContext
+                    .Couriers
+                    .Local
+            .FirstOrDefault(o => o.Id == Id);
+		}
+*/
         return data;
 	}
 
-    public async Task<IEnumerable<Courier>> GetAllReadyAsync()
+    public IEnumerable<Courier> GetAllReady()
     {
-        var data = await _dbContext
-            .Couriers
-            	.Where(o => o.Status == Status.Ready)
-            .ToListAsync();
+        var data =  _dbContext.Couriers.Where(o => o.Status == Status.Ready);
+
 		return data;
     }
 
