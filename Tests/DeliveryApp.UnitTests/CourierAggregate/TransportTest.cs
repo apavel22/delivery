@@ -113,32 +113,30 @@ public class TransportShould
 
 
     [Fact]
-    public void CanWeight()
+    public void CanCarry()
     {
         //Arrange
         var transport = Transport.Pedestrian;
         var weight = Weight.Create(1).Value;
         
         //Act
-        var result = transport.CanWeight(weight);
+        var result = transport.CanCarry(weight);
 
         //Assert
         result.Should().BeTrue();
     }
 
     [Fact]
-    public void CanNotWeight()
+    public void CanNotCarry()
     {
         //Arrange
         var transport = Transport.Pedestrian;
         var weight = Weight.Create(transport.Capacity.Value+1).Value;
         
         //Act
-        var result = transport.CanWeight(weight);
+        var result = transport.CanCarry(weight);
 
         //Assert
         result.Should().BeFalse();
     }
-
-
 }

@@ -3,10 +3,13 @@ using Primitives;
 
 namespace DeliveryApp.Core.Domain.OrderAggregate;
 
+/// <summary>
+/// Статус заказа
+/// </summary>
 public class Status : Entity<int>
 {
-    public static readonly Status Created = new Status(1, nameof(Created).ToLowerInvariant());
-    public static readonly Status Assigned = new Status(2, nameof(Assigned).ToLowerInvariant());
+    public static readonly Status Created   = new Status(1, nameof(Created).ToLowerInvariant());
+    public static readonly Status Assigned  = new Status(2, nameof(Assigned).ToLowerInvariant());
     public static readonly Status Completed = new Status(3, nameof(Completed).ToLowerInvariant());
 
 	public static class Errors
@@ -41,6 +44,10 @@ public class Status : Entity<int>
         yield return Completed;
     }
 
+    /// <summary>
+    /// Status by name
+    /// </summary>
+    /// <returns></returns>
 	public static Result<Status, Error> FromName(string name)
     {
         var state = List()
@@ -50,12 +57,16 @@ public class Status : Entity<int>
     }
 
 
+    /// <summary>
+    /// Status by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
 	public static Result<Status, Error> From(int id)
     {
         var state = List().SingleOrDefault(s => s.Id == id);
         if (state == null) return Errors.StatusIsWrong(id);
         return state;
     }
-
 }
     

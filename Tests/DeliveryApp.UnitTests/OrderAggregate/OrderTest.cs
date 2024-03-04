@@ -20,12 +20,11 @@ public class OrderShould
         var location = Location.Create(4,9);
         var weight = Weight.Create(7);
 
-
         var order = Order.Create(id, location.Value, weight.Value);
 
         //Assert
         order.IsSuccess.Should().BeTrue();
-        order.Value.CourierId.Should().Be(Guid.Empty);
+        order.Value.CourierId.Should().Be(null);
         order.Value.Status.Should().Be(Status.Created);
         order.Value.Location.Should().Be(location.Value);
         order.Value.Weight.Should().Be(weight.Value);
@@ -96,7 +95,7 @@ public class OrderShould
         result.IsSuccess.Should().BeFalse();
         result.Error.Code.Should().Be("order.cant.be.assigned.to.non.ready.courier");
 
-        order.CourierId.Should().Be(Guid.Empty);
+        order.CourierId.Should().Be(null);
         order.Status.Should().Be(Status.Created);
     }
 

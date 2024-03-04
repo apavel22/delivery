@@ -151,6 +151,17 @@ public class WeightShould
         result.Should().BeTrue();
     }
 
+    [Fact]
+    public void ToIntConversion()
+    {
+        //Arrange
+        
+        //Act
+        var weight = Weight.Create(10).Value;
+        int value = weight;
 
+        //Assert
+        value.Should().Be(10);
+    }
 
 }

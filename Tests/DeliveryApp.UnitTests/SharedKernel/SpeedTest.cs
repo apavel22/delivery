@@ -93,26 +93,14 @@ public class SpeedShould
         result.Should().BeTrue();
     }
 
-    [Fact]
-    public void CanCompareMoreThenOrEqualMore()
+    [Theory]
+    [InlineData(10,5)]
+    [InlineData(10,10)]
+    public void CanCompareGreaterThenOrEqual(int firstWeight, int secondWeight)
     {
         //Arrange
-        var first = Speed.Create(10).Value;
-        var second = Speed.Create(5).Value;
-        
-        //Act
-        var result = first >= second;
-
-        //Assert
-        result.Should().BeTrue();
-    }
-
-    [Fact]
-    public void CanCompareMoreThenOrEqualEqual()
-    {
-        //Arrange
-        var first = Speed.Create(10).Value;
-        var second = Speed.Create(10).Value;
+        var first = Speed.Create(firstWeight).Value;
+        var second = Speed.Create(secondWeight).Value;
         
         //Act
         var result = first >= second;
@@ -122,14 +110,15 @@ public class SpeedShould
     }
 
 
-
-    
-    [Fact]
-    public void CanCompareLessThenOrEqualLess()
+    [Theory]
+    [InlineData(5,10)]
+    [InlineData(10,10)]
+    public void CanCompareLessThenOrEqual(int firstWeight, int secondWeight)
     {
-        //Arrange
-        var first = Speed.Create(5).Value;
-        var second = Speed.Create(10).Value;
+
+    //Arrange
+        var first = Speed.Create(firstWeight).Value;
+        var second = Speed.Create(secondWeight).Value;
         
         //Act
         var result = first <= second;
@@ -139,17 +128,16 @@ public class SpeedShould
     }
 
     [Fact]
-    public void CanCompareLessThenOrEqualEqual()
+    public void ToIntConversion()
     {
         //Arrange
-        var first = Speed.Create(5).Value;
-        var second = Speed.Create(5).Value;
         
         //Act
-        var result = first <= second;
+        var speed = Speed.Create(10).Value;
+        int value = speed;
 
         //Assert
-        result.Should().BeTrue();
+        value.Should().Be(10);
     }
 
 }

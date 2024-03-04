@@ -3,6 +3,9 @@ using Primitives;
 
 namespace DeliveryApp.Core.Domain.CourierAggregate;
 
+/// <summary>
+/// Статус курьера
+/// </summary>
 public class Status : Entity<int>
 {
     public static readonly Status NotAvailable  = new Status(1, nameof(NotAvailable).ToLowerInvariant());
@@ -28,6 +31,9 @@ public class Status : Entity<int>
 
 	protected Status()  {}
 
+    /// <summary>
+    /// ctor:
+    /// </summary>
 	protected Status(int id, string name)
     {
         Id = id;
@@ -41,6 +47,11 @@ public class Status : Entity<int>
         yield return Busy;
     }
 
+    /// <summary>
+    /// Status by name
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
 	public static Result<Status, Error> FromName(string name)
     {
         var state = List()
@@ -50,12 +61,15 @@ public class Status : Entity<int>
     }
 
 
+    /// <summary>
+    /// Status by id
+    /// </summary>
+    /// <returns></returns>
 	public static Result<Status, Error> From(int id)
     {
         var state = List().SingleOrDefault(s => s.Id == id);
         if (state == null) return Errors.StatusIsWrong(id);
         return state;
     }
-
 }
     

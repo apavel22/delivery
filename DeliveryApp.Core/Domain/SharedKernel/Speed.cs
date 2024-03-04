@@ -4,6 +4,13 @@ using Primitives;
 
 namespace DeliveryApp.Core.Domain.SharedKernel;
 
+/// <summary>
+/// Скорость
+/// - MinSpeed <= (speed) <= MaxSpeed()
+/// </summary>
+/// <remarks>
+/// Можно сравнивать больше-меньше
+/// </remarks>
 public sealed class Speed : ValueObject
 {
     public static readonly Speed MinSpeed = new Speed(1);
@@ -14,11 +21,21 @@ public sealed class Speed : ValueObject
 
 	protected Speed() {}
 
-	protected Speed(int value)
+    /// <summary>
+    /// ctor:
+    /// </summary>
+	protected Speed(int value) : this()
 	{
 	    Value = value;
 	}
 
+    /// <summary>
+    /// Создать скорость
+    /// </summary>
+    /// <remarks>
+    /// - MinSpeed <= (speed) <= MaxSpeed()
+    /// </remarks>
+    /// <returns></returns>
 	public static Result<Speed, Error> Create(int value)
 	{
 	    if(value < MinSpeed.Value) 
@@ -29,7 +46,6 @@ public sealed class Speed : ValueObject
 
 		return new Speed(value);
 	}
-
 
     public static bool operator < (Speed first, Speed second)
     {
@@ -51,6 +67,11 @@ public sealed class Speed : ValueObject
         return first.Value >= second.Value;
     }
 
+
+	public static implicit operator int(Speed value)
+    {
+		return value.Value;
+    }
 
     [ExcludeFromCodeCoverage]
     protected override IEnumerable<IComparable> GetEqualityComponents()
