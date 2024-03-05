@@ -22,19 +22,21 @@ public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
             .ValueGeneratedNever();
 
 
-		builder.OwnsOne(entity => entity.Location, 
+//		builder.OwnsOne(entity => entity.Location, 
+		builder.ComplexProperty(entity => entity.Location, 
 					a =>
             		{
                 		a.Property(b => b.X).HasColumnName("location_x").IsRequired(true);
                 		a.Property(b => b.Y).HasColumnName("location_y").IsRequired(true);
-		                a.WithOwner();
+//		                a.WithOwner();
         		    });
 
-		builder.OwnsOne(entity => entity.Weight, 
+//		builder.OwnsOne(entity => entity.Weight, 
+		builder.ComplexProperty(entity => entity.Weight, 
 					a =>
             		{
                 		a.Property(b => b.Value).HasColumnName("weight").IsRequired(true);
-		                a.WithOwner();
+//		                a.WithOwner();
         		    });
 
 		builder.Property(entity => entity.CourierId)
@@ -52,7 +54,6 @@ public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
             .WithMany()
             .IsRequired()
             .HasForeignKey("status_id");
-
     }
 }
 

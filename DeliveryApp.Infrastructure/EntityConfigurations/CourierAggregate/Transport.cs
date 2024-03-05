@@ -22,6 +22,7 @@ class TransportEntityTypeConfiguration : IEntityTypeConfiguration<Transport>
              .IsRequired();
 
 		builder.OwnsOne(entity => entity.Speed, 
+//		builder.ComplexProperty(entity => entity.Speed, 
 					a =>
             		{
                 		a.Property(b => b.Value).HasColumnName("speed").IsRequired();
@@ -29,6 +30,7 @@ class TransportEntityTypeConfiguration : IEntityTypeConfiguration<Transport>
         		    });
 
 		builder.OwnsOne(entity => entity.Capacity, 
+//		builder.ComplexProperty(entity => entity.Capacity, 
 					a =>
             		{
                 		a.Property(b => b.Value).HasColumnName("capacity").IsRequired();

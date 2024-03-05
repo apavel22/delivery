@@ -15,7 +15,7 @@ public class StatusShould
         //Act
         var notAvailableStatus = Status.NotAvailable;
         var readyStatus = Status.Ready;
-        var busyStatus = Status.InWork;
+        var inWorkStatus = Status.InWork;
         
 
         //Assert
@@ -25,8 +25,8 @@ public class StatusShould
         readyStatus.Id.Should().Be(2);
         readyStatus.Name.Should().Be("ready");
 
-        busyStatus.Id.Should().Be(3);
-        busyStatus.Name.Should().Be("inwork");
+        inWorkStatus.Id.Should().Be(3);
+        inWorkStatus.Name.Should().Be("inwork");
 
     }
     
@@ -44,8 +44,6 @@ public class StatusShould
         //Assert
         status.Id.Should().Be(id);
         status.Name.Should().Be(name);
-
-
     }
     
     [Theory]
