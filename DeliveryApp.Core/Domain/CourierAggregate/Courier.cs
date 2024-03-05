@@ -79,8 +79,8 @@ public class Courier : Aggregate
 
     	var id = Guid.NewGuid();
 //		var defaultLocation = Location.Create(1,1).Value;
-//		var defaultLocation = Location.Create(Location.MinLocation).Value;
-		var defaultLocation = Location.MinLocation;
+		var defaultLocation = Location.Create(Location.MinLocation).Value;
+//		var defaultLocation = Location.MinLocation;
 		var defaultStatus = Status.NotAvailable;
 
     	return new Courier(id, name, transport, defaultLocation, defaultStatus);

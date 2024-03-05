@@ -16,10 +16,11 @@ using DeliveryApp.Infrastructure.EntityConfigurations.OrderAggregate;
 using CourierStatusConfiguration = DeliveryApp.Infrastructure.EntityConfigurations.CourierAggregate;
 using OrderStatusConfiguration = DeliveryApp.Infrastructure.EntityConfigurations.OrderAggregate;
 
+using Primitives;
 
 namespace DeliveryApp.Infrastructure;
 
-public class ApplicationDbContext : DbContext //, IUnitOfWork
+public class ApplicationDbContext : DbContext, IUnitOfWork
 {
 	public DbSet<Order> Orders { get; set; }
 	public DbSet<Courier> Couriers { get; set; }

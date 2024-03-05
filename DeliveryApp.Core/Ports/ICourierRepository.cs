@@ -14,7 +14,7 @@ public interface ICourierRepository : IRepository<Courier>
     /// </summary>
     /// <param name="courier"></param>
     /// <returns></returns>
-    Courier Add(Courier courier);
+    void Add(Courier courier);
 
     /// <summary>
     /// Обновить курьера

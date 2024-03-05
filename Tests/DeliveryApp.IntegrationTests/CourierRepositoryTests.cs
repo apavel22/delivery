@@ -46,7 +46,7 @@ public class CourierRepositoryTestsShould: BaseRepositoryTestsShould
         var data = Courier.Create("Name 1", transport).Value;
 
         ICourierRepository repository = new CourierRepository(_context);
-        data = repository.Add(data);
+        repository.Add(data);
 
         //Act
         var to = Location.Create(2,2).Value;
@@ -84,7 +84,7 @@ public class CourierRepositoryTestsShould: BaseRepositoryTestsShould
 
         //Act
         ICourierRepository repository = new CourierRepository(_context);
-        data = repository.Add(data);
+        repository.Add(data);
 
         //Assert
         var allData = repository.GetAllReady();

@@ -13,7 +13,7 @@ public interface IOrderRepository : IRepository<Order>
     /// </summary>
     /// <param name="order"></param>
     /// <returns></returns>
-    Order Add(Order order);
+    void Add(Order order);
 
     /// <summary>
     /// обновить заказ
@@ -32,6 +32,6 @@ public interface IOrderRepository : IRepository<Order>
     /// Получить все неаспределенные заказы
     /// </summary>
     /// <returns></returns>
-    IEnumerable<Order> GetAllUnassigned();
+    IEnumerable<Order> GetAllNew();
 }
 

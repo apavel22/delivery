@@ -12,19 +12,18 @@ public class OrderRepository : IOrderRepository
 {
     private readonly ApplicationDbContext _dbContext;
 
+    public IUnitOfWork UnitOfWork => _dbContext;
+
     public OrderRepository(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
-    public Order Add(Order data)
+    public void Add(Order data)
     {
         _dbContext.Attach(data.Status);
-        var dataOut = _dbContext.Orders.Add(data).Entity;
-
+        _dbContext.Orders.Add(data);
         _dbContext.SaveChanges();
-
-        return dataOut;
     }
 
 
@@ -43,23 +42,16 @@ public class OrderRepository : IOrderRepository
 	            .Include(x => x.Status)
             .FirstOrDefaultAsync(o => o.Id == Id);
 
-/*
-            if (data == null)
-            {
-                data = _dbContext
-                    .Orders
-                    .Local
-    	        .FirstOrDefault(o => o.Id == Id);
-            }
-*/
         return data;
 
 	}
 
-    public IEnumerable<Order> GetAllUnassigned()
+    public IEnumerable<Order> GetAllNew()
     {
-        var data = _dbContext.Orders.Where(o => o.Status == Status.Created);
-
+        var data = _dbContext
+	        .Orders
+				.Include(x => x.Status)
+	        .Where(o => o.Status == Status.New);
         return data;
     }
 

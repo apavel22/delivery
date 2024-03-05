@@ -14,22 +14,20 @@ public class CourierRepository : ICourierRepository
 {
     private readonly ApplicationDbContext _dbContext;
 
+    public IUnitOfWork UnitOfWork => _dbContext;
+
     public CourierRepository(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
 
-    public Courier Add(Courier data)
+    public void Add(Courier data)
     {
         _dbContext.Attach(data.Status);
         _dbContext.Attach(data.Transport);
-
-        var dataOut = _dbContext.Couriers.Add(data).Entity;
-
+        _dbContext.Couriers.Add(data);
         _dbContext.SaveChanges();
-
-        return dataOut;
     }
 
 
@@ -61,21 +59,16 @@ public class CourierRepository : ICourierRepository
                 .Include(x => x.Status)
 	            .Include(x => x.Transport)
             .FirstOrDefaultAsync(o => o.Id == Id);
-/*
-		if (data == null)
-		{
-			data = _dbContext
-                    .Couriers
-                    .Local
-            .FirstOrDefault(o => o.Id == Id);
-		}
-*/
         return data;
 	}
 
     public IEnumerable<Courier> GetAllReady()
     {
-        var data =  _dbContext.Couriers.Where(o => o.Status == Status.Ready);
+        var data =  _dbContext
+        		.Couriers
+    	            .Include(x => x.Status)
+		            .Include(x => x.Transport)
+        		.Where(o => o.Status == Status.Ready);
 
 		return data;
     }
