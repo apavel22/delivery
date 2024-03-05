@@ -15,7 +15,7 @@ namespace DeliveryApp.UnitTests.Application;
 public class CreateOrderCommandShould
 {
     private readonly IOrderRepository _orderRepositoryMock;
-    
+
     public CreateOrderCommandShould()
     {
         _orderRepositoryMock = Substitute.For<IOrderRepository>();
@@ -41,71 +41,71 @@ public class CreateOrderCommandShould
     }
 
 
-/*
-    [Fact]
-    public async void ReturnFalseWhenGoodNotExists()
-    {
-        //Arrange
-        var buyerId = Guid.NewGuid();
-        _goodRepositoryMock.GetAsync(Arg.Any<Guid>())
-            .Returns(Task.FromResult(EmptyGood()));
+    /*
+        [Fact]
+        public async void ReturnFalseWhenGoodNotExists()
+        {
+            //Arrange
+            var buyerId = Guid.NewGuid();
+            _goodRepositoryMock.GetAsync(Arg.Any<Guid>())
+                .Returns(Task.FromResult(EmptyGood()));
 
-        var command = new Core.Application.UseCases.Commands.ChangeItems.Command(buyerId,Good.Bread.Id,1);
-        var handler = new Core.Application.UseCases.Commands.ChangeItems.Handler(_basketRepositoryMock,_goodRepositoryMock);
+            var command = new Core.Application.UseCases.Commands.ChangeItems.Command(buyerId,Good.Bread.Id,1);
+            var handler = new Core.Application.UseCases.Commands.ChangeItems.Handler(_basketRepositoryMock,_goodRepositoryMock);
 
-        //Act
-        var result = await handler.Handle(command, new CancellationToken());
+            //Act
+            var result = await handler.Handle(command, new CancellationToken());
 
-        //Assert
-        result.Should().BeFalse();
-    }
-    
-    [Fact]
-    public async void CanAddNewBasket()
-    {
-        //Arrange
-        var buyerId = Guid.NewGuid();
-        
-        _goodRepositoryMock.GetAsync(Arg.Any<Guid>())
-            .Returns(Task.FromResult(CorrectGood()));
-        _basketRepositoryMock.GetByBuyerIdAsync(Arg.Any<Guid>())
-            .Returns(Task.FromResult(EmptyBasket()));
-        _basketRepositoryMock.Add(Arg.Any<Basket>())
-            .Returns(CorrectBasket(buyerId));
-        _basketRepositoryMock.UnitOfWork.SaveEntitiesAsync()
-            .Returns(Task.FromResult(true));
+            //Assert
+            result.Should().BeFalse();
+        }
 
-        var command = new Core.Application.UseCases.Commands.ChangeItems.Command(buyerId,Good.Bread.Id,1);
-        var handler = new Core.Application.UseCases.Commands.ChangeItems.Handler(_basketRepositoryMock,_goodRepositoryMock);
+        [Fact]
+        public async void CanAddNewBasket()
+        {
+            //Arrange
+            var buyerId = Guid.NewGuid();
 
-        //Act
-        var result = await handler.Handle(command, new CancellationToken());
+            _goodRepositoryMock.GetAsync(Arg.Any<Guid>())
+                .Returns(Task.FromResult(CorrectGood()));
+            _basketRepositoryMock.GetByBuyerIdAsync(Arg.Any<Guid>())
+                .Returns(Task.FromResult(EmptyBasket()));
+            _basketRepositoryMock.Add(Arg.Any<Basket>())
+                .Returns(CorrectBasket(buyerId));
+            _basketRepositoryMock.UnitOfWork.SaveEntitiesAsync()
+                .Returns(Task.FromResult(true));
 
-        //Assert
-        result.Should().BeTrue();
-        _goodRepositoryMock.Received(1);
-        _basketRepositoryMock.Received(1);
-    }
-    
-    private Good EmptyGood()
-    {
-        return null;
-    }
-    
-    private Good CorrectGood()
-    {
-        return Good.Bread;
-    }
-    
-    private Basket EmptyBasket()
-    {
-        return null;
-    }
-    
-    private Basket CorrectBasket(Guid buyerId)
-    {
-        return Basket.Create(buyerId).Value;
-    }
-*/
+            var command = new Core.Application.UseCases.Commands.ChangeItems.Command(buyerId,Good.Bread.Id,1);
+            var handler = new Core.Application.UseCases.Commands.ChangeItems.Handler(_basketRepositoryMock,_goodRepositoryMock);
+
+            //Act
+            var result = await handler.Handle(command, new CancellationToken());
+
+            //Assert
+            result.Should().BeTrue();
+            _goodRepositoryMock.Received(1);
+            _basketRepositoryMock.Received(1);
+        }
+
+        private Good EmptyGood()
+        {
+            return null;
+        }
+
+        private Good CorrectGood()
+        {
+            return Good.Bread;
+        }
+
+        private Basket EmptyBasket()
+        {
+            return null;
+        }
+
+        private Basket CorrectBasket(Guid buyerId)
+        {
+            return Basket.Create(buyerId).Value;
+        }
+    */
 
 }
