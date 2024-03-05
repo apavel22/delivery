@@ -15,7 +15,7 @@ using Xunit;
 
 namespace DeliveryApp.IntegrationTests;
 
-public class CourierRepositoryTestsShould: BaseRepositoryTestsShould
+public class CourierRepositoryTestsShould : BaseRepositoryTestsShould
 {
 
     [Fact]
@@ -84,37 +84,37 @@ public class CourierRepositoryTestsShould: BaseRepositoryTestsShould
     [Fact]
     public async void CanUpdateCourier()
     {
-    	// Arrange
+        // Arrange
         var transport = Transport.Car;
         var data = Courier.Create("Name 1", transport).Value;
 
         CourierRepository repository = new CourierRepository(_context);
         repository.Add(data);
         await repository.UnitOfWork.SaveEntitiesAsync();
-  
+
         //Act
-        var to = Location.Create(2,2).Value;
+        var to = Location.Create(2, 2).Value;
 
         data.StartWork();
         data.Move(to);
-        
+
         //Act
         repository.Update(data);
         await repository.UnitOfWork.SaveEntitiesAsync();
-        
+
         //Assert
         var dataFromDb = await repository.GetByIdAsync(data.Id);
         data.Should().BeEquivalentTo(dataFromDb);
 
 
         //Act
-        to = Location.Create(3,3).Value;
+        to = Location.Create(3, 3).Value;
         data.Move(to);
-        
+
         //Act
         repository.Update(data);
         await repository.UnitOfWork.SaveEntitiesAsync();
-        
+
         //Assert
         dataFromDb = await repository.GetByIdAsync(data.Id);
         data.Should().BeEquivalentTo(dataFromDb);
@@ -125,7 +125,7 @@ public class CourierRepositoryTestsShould: BaseRepositoryTestsShould
     [Fact]
     public async void CanGetAllReady()
     {
-    	// Arrange
+        // Arrange
         var transport = Transport.Pedestrian;
         var data1 = Courier.Create("Name 1", transport).Value;
         var data2 = Courier.Create("Name 1", transport).Value;
@@ -146,9 +146,9 @@ public class CourierRepositoryTestsShould: BaseRepositoryTestsShould
         await repository.UnitOfWork.SaveEntitiesAsync();
 
         //Assert
-		allData = repository.GetAllReady();
+        allData = repository.GetAllReady();
         allData.Count().Should().Be(1);
         allData.First().Should().BeEquivalentTo(data1);
-	}
+    }
 }
 

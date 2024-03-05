@@ -14,7 +14,7 @@ class StatusEntityTypeConfiguration : IEntityTypeConfiguration<Status>
 
         builder.HasKey(entity => entity.Id);
         builder.Property(entity => entity.Id)
-        	.HasColumnName("id")
+            .HasColumnName("id")
             .ValueGeneratedNever();
 
         builder.Property(entity => entity.Name)

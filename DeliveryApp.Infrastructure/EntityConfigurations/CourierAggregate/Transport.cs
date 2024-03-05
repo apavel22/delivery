@@ -7,35 +7,35 @@ namespace DeliveryApp.Infrastructure.EntityConfigurations.CourierAggregate;
 
 class TransportEntityTypeConfiguration : IEntityTypeConfiguration<Transport>
 {
-    public void Configure(EntityTypeBuilder<Transport> builder)
-    {
-        builder.ToTable("transport");
+	public void Configure(EntityTypeBuilder<Transport> builder)
+	{
+		builder.ToTable("transport");
 
-        builder.HasKey(entity => entity.Id);
-        builder.Property(entity => entity.Id)
-        	.HasColumnName("id")
-            .ValueGeneratedNever();
+		builder.HasKey(entity => entity.Id);
+		builder.Property(entity => entity.Id)
+			.HasColumnName("id")
+			.ValueGeneratedNever();
 
-        builder.Property(c => c.Name)
-             .UsePropertyAccessMode(PropertyAccessMode.Field)
-             .HasColumnName("name")
-             .IsRequired();
+		builder.Property(c => c.Name)
+			 .UsePropertyAccessMode(PropertyAccessMode.Field)
+			 .HasColumnName("name")
+			 .IsRequired();
 
-		builder.OwnsOne(entity => entity.Speed, 
-//		builder.ComplexProperty(entity => entity.Speed, 
+		builder.OwnsOne(entity => entity.Speed,
+					//		builder.ComplexProperty(entity => entity.Speed, 
 					a =>
-            		{
-                		a.Property(b => b.Value).HasColumnName("speed").IsRequired();
-		                a.WithOwner();
-        		    });
+					{
+						a.Property(b => b.Value).HasColumnName("speed").IsRequired();
+						a.WithOwner();
+					});
 
-		builder.OwnsOne(entity => entity.Capacity, 
-//		builder.ComplexProperty(entity => entity.Capacity, 
+		builder.OwnsOne(entity => entity.Capacity,
+					//		builder.ComplexProperty(entity => entity.Capacity, 
 					a =>
-            		{
-                		a.Property(b => b.Value).HasColumnName("capacity").IsRequired();
-		                a.WithOwner();
-        		    });
-    }
+					{
+						a.Property(b => b.Value).HasColumnName("capacity").IsRequired();
+						a.WithOwner();
+					});
+	}
 }
 

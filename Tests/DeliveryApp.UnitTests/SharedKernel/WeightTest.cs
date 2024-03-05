@@ -93,8 +93,8 @@ public class WeightShould
     }
 
     [Theory]
-    [InlineData(10,5)]
-    [InlineData(10,10)]
+    [InlineData(10, 5)]
+    [InlineData(10, 10)]
     public void CanCompareGreaterThenOrEqual(int _first, int _second)
     {
         //Arrange
@@ -110,8 +110,8 @@ public class WeightShould
     }
 
     [Theory]
-    [InlineData(5,10)]
-    [InlineData(10,10)]
+    [InlineData(5, 10)]
+    [InlineData(10, 10)]
     public void CanCompareLessThenOrEqual(int _first, int _second)
     {
         //Arrange

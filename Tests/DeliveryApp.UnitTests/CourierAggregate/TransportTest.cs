@@ -83,12 +83,12 @@ public class TransportShould
         transport.IsSuccess.Should().BeFalse();
         transport.Error.Should().NotBeNull();
 
-    //Act
+        //Act
         transport = Transport.From(id);
 
         transport.IsSuccess.Should().BeFalse();
         transport.Error.Should().NotBeNull();
-   }
+    }
 
 
     [Fact]

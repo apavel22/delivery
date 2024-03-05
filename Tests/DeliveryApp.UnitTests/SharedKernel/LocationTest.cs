@@ -113,5 +113,5 @@ public class LocationShould
         result = (first - second).Value == (second - first).Value;
         result.Should().BeTrue();
     }
-   
+
 }

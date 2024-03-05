@@ -13,14 +13,14 @@ using Xunit;
 
 namespace DeliveryApp.IntegrationTests;
 
-public class BaseRepositoryTestsShould: IAsyncLifetime
+public class BaseRepositoryTestsShould : IAsyncLifetime
 {
     protected ApplicationDbContext _context;
 
     /// <summary>
-    /// Настройка Postgres из библиотеки TestContainers
+    /// РќР°СЃС‚СЂРѕР№РєР° Postgres РёР· Р±РёР±Р»РёРѕС‚РµРєРё TestContainers
     /// </summary>
-    /// <remarks>По сути это Docker контейнер с Postgres</remarks>
+    /// <remarks>РџРѕ СЃСѓС‚Рё СЌС‚Рѕ Docker РєРѕРЅС‚РµР№РЅРµСЂ СЃ Postgres</remarks>
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithImage("postgres:14.7")
         .WithDatabase("delivery")
@@ -31,15 +31,15 @@ public class BaseRepositoryTestsShould: IAsyncLifetime
 
 
     /// <summary>
-    /// Инициализируем окружение
+    /// РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РѕРєСЂСѓР¶РµРЅРёРµ
     /// </summary>
-    /// <remarks>Вызывается перед каждым тестом</remarks>
+    /// <remarks>Р’С‹Р·С‹РІР°РµС‚СЃСЏ РїРµСЂРµРґ РєР°Р¶РґС‹Рј С‚РµСЃС‚РѕРј</remarks>
     public async Task InitializeAsync()
     {
-        //Стартуем БД (библиотека TestContainers запускает Docker контейнер с Postgres)
+        //РЎС‚Р°СЂС‚СѓРµРј Р‘Р” (Р±РёР±Р»РёРѕС‚РµРєР° TestContainers Р·Р°РїСѓСЃРєР°РµС‚ Docker РєРѕРЅС‚РµР№РЅРµСЂ СЃ Postgres)
         await _postgreSqlContainer.StartAsync();
-        
-        //Накатываем миграции и справочники
+
+        //РќР°РєР°С‚С‹РІР°РµРј РјРёРіСЂР°С†РёРё Рё СЃРїСЂР°РІРѕС‡РЅРёРєРё
         var contextOptions = new DbContextOptionsBuilder<ApplicationDbContext>().UseNpgsql(_postgreSqlContainer.GetConnectionString(),
                 npgsqlOptionsAction: sqlOptions =>
                 {
@@ -53,9 +53,9 @@ public class BaseRepositoryTestsShould: IAsyncLifetime
 
 
     /// <summary>
-    /// Уничтожаем окружение
+    /// РЈРЅРёС‡С‚РѕР¶Р°РµРј РѕРєСЂСѓР¶РµРЅРёРµ
     /// </summary>
-    /// <remarks>Вызывается после каждого теста</remarks>
+    /// <remarks>Р’С‹Р·С‹РІР°РµС‚СЃСЏ РїРѕСЃР»Рµ РєР°Р¶РґРѕРіРѕ С‚РµСЃС‚Р°</remarks>
     public async Task DisposeAsync()
     {
         await _postgreSqlContainer.DisposeAsync().AsTask();

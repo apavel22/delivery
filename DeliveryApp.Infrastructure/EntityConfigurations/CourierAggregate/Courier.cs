@@ -15,7 +15,7 @@ public class CourierEntityTypeConfiguration : IEntityTypeConfiguration<Courier>
 
         builder.HasKey(entity => entity.Id);
         builder.Property(entity => entity.Id)
-        	.HasColumnName("id")
+            .HasColumnName("id")
             .ValueGeneratedNever();
 
         builder.Property(entity => entity.Name)
@@ -24,25 +24,25 @@ public class CourierEntityTypeConfiguration : IEntityTypeConfiguration<Courier>
              .IsRequired();
 
 
-		builder.HasOne(entity => entity.Transport)
+        builder.HasOne(entity => entity.Transport)
             .WithMany()
             .IsRequired()
             .HasForeignKey("transport_id");
-        
-		builder.HasOne(entity => entity.Status)
+
+        builder.HasOne(entity => entity.Status)
             .WithMany()
             .IsRequired()
             .HasForeignKey("status_id");
 
-//		builder.OwnsOne(entity => entity.Location, 
-		builder.ComplexProperty(entity => entity.Location, 
-					a =>
-            		{
-                		a.Property(b => b.X).HasColumnName("location_x").IsRequired(true);
-                		a.Property(b => b.Y).HasColumnName("location_y").IsRequired(true);
-//		                a.WithOwner();
-        		    });
+        //		builder.OwnsOne(entity => entity.Location, 
+        builder.ComplexProperty(entity => entity.Location,
+                    a =>
+                    {
+                        a.Property(b => b.X).HasColumnName("location_x").IsRequired(true);
+                        a.Property(b => b.Y).HasColumnName("location_y").IsRequired(true);
+                        //		                a.WithOwner();
+                    });
 
-   }
+    }
 }
 

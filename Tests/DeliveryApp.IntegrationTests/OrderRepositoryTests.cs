@@ -15,15 +15,15 @@ using Xunit;
 
 namespace DeliveryApp.IntegrationTests;
 
-public class OrderRepositoryTestsShould: BaseRepositoryTestsShould
+public class OrderRepositoryTestsShould : BaseRepositoryTestsShould
 {
 
     [Fact]
     public async void CanAddOrder()
     {
         //Arrange
-    	var id = Guid.NewGuid();
-        var location = Location.Create(4,9);
+        var id = Guid.NewGuid();
+        var location = Location.Create(4, 9);
         var weight = Weight.Create(7);
 
         var order = Order.Create(id, location.Value, weight.Value).Value;
@@ -44,9 +44,9 @@ public class OrderRepositoryTestsShould: BaseRepositoryTestsShould
     public async void CanAddFewOrdersAtOnceWithSameWeightAndLocation()
     {
         //Arrange
-    	var id1 = Guid.NewGuid();
-    	var id2 = Guid.NewGuid();
-        var location = Location.Create(4,9);
+        var id1 = Guid.NewGuid();
+        var id2 = Guid.NewGuid();
+        var location = Location.Create(4, 9);
         var weight = Weight.Create(7);
 
         var order1 = Order.Create(id1, location.Value, weight.Value).Value;
@@ -64,19 +64,17 @@ public class OrderRepositoryTestsShould: BaseRepositoryTestsShould
         var dataFromDb1 = await repository.GetByIdAsync(order1.Id);
         order1.Should().BeEquivalentTo(dataFromDb1);
 
+        //Act
         var dataFromDb2 = await repository.GetByIdAsync(order2.Id);
         order2.Should().BeEquivalentTo(dataFromDb2);
-
-        //Act
-
     }
 
     [Fact]
     public async void CanUpdateOrder()
     {
         //Arrange
-    	var id = Guid.NewGuid();
-        var location = Location.Create(4,9);
+        var id = Guid.NewGuid();
+        var location = Location.Create(4, 9);
         var weight = Weight.Create(1);
 
         var order = Order.Create(id, location.Value, weight.Value).Value;
@@ -106,9 +104,9 @@ public class OrderRepositoryTestsShould: BaseRepositoryTestsShould
     public async void CanGetAllNew()
     {
         //Arrange
-        var order1 = Order.Create(Guid.NewGuid(), Location.Create(1,7).Value, Weight.Create(3).Value).Value;
-        var order2 = Order.Create(Guid.NewGuid(), Location.Create(1,7).Value, Weight.Create(3).Value).Value;
-        var order3 = Order.Create(Guid.NewGuid(), Location.Create(1,7).Value, Weight.Create(3).Value).Value;
+        var order1 = Order.Create(Guid.NewGuid(), Location.Create(1, 7).Value, Weight.Create(3).Value).Value;
+        var order2 = Order.Create(Guid.NewGuid(), Location.Create(1, 7).Value, Weight.Create(3).Value).Value;
+        var order3 = Order.Create(Guid.NewGuid(), Location.Create(1, 7).Value, Weight.Create(3).Value).Value;
 
         //Act
         OrderRepository orderRepository = new OrderRepository(_context);
@@ -135,9 +133,9 @@ public class OrderRepositoryTestsShould: BaseRepositoryTestsShould
         await orderRepository.UnitOfWork.SaveEntitiesAsync();
 
         //Assert
-		allData = orderRepository.GetAllNew();
+        allData = orderRepository.GetAllNew();
         allData.Count().Should().Be(2);
         allData.First().Should().BeEquivalentTo(order2);
         allData.Last().Should().BeEquivalentTo(order3);
-	}
+    }
 }

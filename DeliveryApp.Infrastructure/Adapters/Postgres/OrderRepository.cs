@@ -39,19 +39,19 @@ public class OrderRepository : IOrderRepository
     {
         var data = await _dbContext
             .Orders
-	            .Include(x => x.Status)
+                .Include(x => x.Status)
             .FirstOrDefaultAsync(o => o.Id == Id);
 
         return data;
 
-	}
+    }
 
     public IEnumerable<Order> GetAllNew()
     {
         var data = _dbContext
-	        .Orders
-				.Include(x => x.Status)
-	        .Where(o => o.Status == Status.New);
+            .Orders
+                .Include(x => x.Status)
+            .Where(o => o.Status == Status.New);
         return data;
     }
 
