@@ -10,7 +10,7 @@ public class Status : Entity<int>
 {
     public static readonly Status NotAvailable  = new Status(1, nameof(NotAvailable).ToLowerInvariant());
     public static readonly Status Ready  = new Status(2, nameof(Ready).ToLowerInvariant());
-    public static readonly Status Busy  = new Status(3, nameof(Busy ).ToLowerInvariant());
+    public static readonly Status InWork  = new Status(3, nameof(InWork ).ToLowerInvariant());
 
 	public static class Errors
     {
@@ -44,7 +44,7 @@ public class Status : Entity<int>
     {
         yield return NotAvailable;
         yield return Ready;
-        yield return Busy;
+        yield return InWork;
     }
 
     /// <summary>
@@ -71,5 +71,4 @@ public class Status : Entity<int>
         if (state == null) return Errors.StatusIsWrong(id);
         return state;
     }
-}
-    
+}    

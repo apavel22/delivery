@@ -63,12 +63,10 @@ public sealed class Weight : ValueObject
         return first.Value >= second.Value;
     }
 
-
 	public static implicit operator int(Weight value)
     {
 		return value.Value;
     }
-
 
     [ExcludeFromCodeCoverage]
     protected override IEnumerable<IComparable> GetEqualityComponents()

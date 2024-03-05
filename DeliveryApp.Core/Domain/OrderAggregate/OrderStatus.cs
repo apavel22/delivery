@@ -8,38 +8,38 @@ namespace DeliveryApp.Core.Domain.OrderAggregate;
 /// </summary>
 public class Status : Entity<int>
 {
-    public static readonly Status Created   = new Status(1, nameof(Created).ToLowerInvariant());
-    public static readonly Status Assigned  = new Status(2, nameof(Assigned).ToLowerInvariant());
+    public static readonly Status New = new Status(1, nameof(New).ToLowerInvariant());
+    public static readonly Status Assigned = new Status(2, nameof(Assigned).ToLowerInvariant());
     public static readonly Status Completed = new Status(3, nameof(Completed).ToLowerInvariant());
 
-	public static class Errors
+    public static class Errors
     {
         public static Error StatusIsWrong(int id)
         {
-            return new($"{nameof(Status).ToLowerInvariant()}.is.wrong", 
-                $"Не верное значение {id}. Допустимые значения: {nameof(Status).ToLowerInvariant()}: { string.Join(",", List().Select(s => s.Id))}");
+            return new($"{nameof(Status).ToLowerInvariant()}.is.wrong",
+                $"Не верное значение {id}. Допустимые значения: {nameof(Status).ToLowerInvariant()}: {string.Join(",", List().Select(s => s.Id))}");
         }
         public static Error StatusIsWrong(string name)
         {
-            return new($"{nameof(Status).ToLowerInvariant()}.is.wrong", 
-                $"Не верное значение {name}. Допустимые значения: {nameof(Status).ToLowerInvariant()}: { string.Join(",", List().Select(s => s.Name))}");
+            return new($"{nameof(Status).ToLowerInvariant()}.is.wrong",
+                $"Не верное значение {name}. Допустимые значения: {nameof(Status).ToLowerInvariant()}: {string.Join(",", List().Select(s => s.Name))}");
         }
     }
 
 
-	public virtual string Name { get; }
+    public virtual string Name { get; }
 
-	protected Status()  {}
+    protected Status() { }
 
-	protected Status(int id, string name)
+    protected Status(int id, string name)
     {
         Id = id;
         Name = name;
     }
 
-	public static IEnumerable<Status> List()
+    public static IEnumerable<Status> List()
     {
-        yield return Created;
+        yield return New;
         yield return Assigned;
         yield return Completed;
     }
@@ -69,4 +69,4 @@ public class Status : Entity<int>
         return state;
     }
 }
-    
+

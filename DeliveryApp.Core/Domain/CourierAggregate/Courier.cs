@@ -1,5 +1,6 @@
 using DeliveryApp.Core.Domain.SharedKernel;
 using CSharpFunctionalExtensions;
+
 using Primitives;
 
 namespace DeliveryApp.Core.Domain.CourierAggregate;
@@ -31,12 +32,12 @@ public class Courier : Aggregate
             return new($"{nameof(Courier).ToLowerInvariant()}.has.invalid.status.to.stop.work", "Курьер не может заканчивать работать из Status {status}");
         }
 
-		public static Error CourierHasAlreadyBusy()
+		public static Error CourierHasAlreadyInWork()
         {
             return new($"{nameof(Courier).ToLowerInvariant()}.has.already.busy", "Курьер уже выполняет заказ");
         }
 
-		public static Error CourierHasInvalidStatusBusy(Status status)
+		public static Error CourierHasInvalidStatusToInWork(Status status)
         {
             return new($"{nameof(Courier).ToLowerInvariant()}.has.invalid.status.to.assign.to.order", "Курьер не может брать заказ из Status {status}");
         }
@@ -65,7 +66,7 @@ public class Courier : Aggregate
 	/// Создать курьера
 	/// </summary>
 	/// <remarks>
-	/// - def location: (1,1)
+	/// - def location: Location.MinLocation
 	/// - def status NA
 	/// </remarks>
 	/// <param name="name">Имя</param>
@@ -77,7 +78,9 @@ public class Courier : Aggregate
     	if (string.IsNullOrEmpty(name)) return GeneralErrors.ValueIsInvalid(nameof(name));
 
     	var id = Guid.NewGuid();
-		var defaultLocation = Location.Create(1,1).Value;
+//		var defaultLocation = Location.Create(1,1).Value;
+//		var defaultLocation = Location.Create(Location.MinLocation).Value;
+		var defaultLocation = Location.MinLocation;
 		var defaultStatus = Status.NotAvailable;
 
     	return new Courier(id, name, transport, defaultLocation, defaultStatus);
@@ -121,10 +124,10 @@ public class Courier : Aggregate
 	/// <returns></returns>
     public Result<object, Error> InWork()
     {
-		 if (Status == Status.Busy) return Errors.CourierHasAlreadyBusy();   	
-		 if (Status != Status.Ready) return Errors.CourierHasInvalidStatusBusy(Status);   	
+		 if (Status == Status.InWork) return Errors.CourierHasAlreadyInWork();   	
+		 if (Status != Status.Ready) return Errors.CourierHasInvalidStatusToInWork(Status);   	
 
-		 Status = Status.Busy;
+		 Status = Status.InWork;
 
 		 return new object();
     }
@@ -167,14 +170,14 @@ public class Courier : Aggregate
 	/// </remarks>
 	/// <example>
 	/// </example>
-	/// <param name="to"></param>
+	/// <param name="locationTo"></param>
 	/// <returns></returns>
-    public Result<object, Error> Move(Location to)
+    public Result<object, Error> Move(Location locationTo)
     {
-		if(to == null) return GeneralErrors.ValueIsRequired(nameof(to));
+		if(locationTo == null) return GeneralErrors.ValueIsRequired(nameof(locationTo));
 
-    	var distance_x = Math.Abs(Location.X - to.X);
-    	var distance_y = Math.Abs(Location.Y - to.Y);
+    	var distance_x = Math.Abs(Location.X - locationTo.X);
+    	var distance_y = Math.Abs(Location.Y - locationTo.Y);
 
     	// уже на месте
     	if(distance_x == 0 && distance_y == 0) return new object();
@@ -198,10 +201,10 @@ public class Courier : Aggregate
    	    int delta_y = Math.Min(distance_y, remain);
 
    	    // сдвигаемся в зависимости от направления
-   	    if(Location.X > to.X) new_x = Location.X - delta_x;	
+   	    if(Location.X > locationTo.X) new_x = Location.X - delta_x;	
   	    else new_x = Location.X + delta_x;
 
-   	    if(Location.Y > to.Y) new_y = Location.Y - delta_y;	
+   	    if(Location.Y > locationTo.Y) new_y = Location.Y - delta_y;	
   	    else new_y = Location.Y + delta_y;
 
     	Location = Location.Create(new_x, new_y).Value;

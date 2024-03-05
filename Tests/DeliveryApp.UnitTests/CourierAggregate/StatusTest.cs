@@ -15,7 +15,7 @@ public class StatusShould
         //Act
         var notAvailableStatus = Status.NotAvailable;
         var readyStatus = Status.Ready;
-        var busyStatus = Status.Busy;
+        var busyStatus = Status.InWork;
         
 
         //Assert
@@ -26,14 +26,14 @@ public class StatusShould
         readyStatus.Name.Should().Be("ready");
 
         busyStatus.Id.Should().Be(3);
-        busyStatus.Name.Should().Be("busy");
+        busyStatus.Name.Should().Be("inwork");
 
     }
     
     [Theory]
     [InlineData(1,"notavailable")]
     [InlineData(2,"ready")]
-    [InlineData(3,"busy")]
+    [InlineData(3,"inwork")]
     public void CanBeFoundById(int id, string name)
     {
         //Arrange
@@ -44,12 +44,14 @@ public class StatusShould
         //Assert
         status.Id.Should().Be(id);
         status.Name.Should().Be(name);
+
+
     }
     
     [Theory]
     [InlineData(1,"notavailable")]
     [InlineData(2,"ready")]
-    [InlineData(3,"busy")]
+    [InlineData(3,"inwork")]
     public void CanBeFoundByName(int id, string name)
     {
         //Arrange
@@ -73,23 +75,14 @@ public class StatusShould
 
         status.IsSuccess.Should().BeFalse();
         status.Error.Should().NotBeNull();
-        
-    }
 
-    [Theory]
-    [InlineData(-7,"some")]
-    public void CanNotBeFoundByWrongId(int id, string name)
-    {
-        //Arrange
-        
         //Act
-        var status = Status.From(id);
+        status = Status.From(id);
 
         status.IsSuccess.Should().BeFalse();
         status.Error.Should().NotBeNull();
-        
+
     }
-    
 
     [Fact]
     public void ReturnListOfStatuses()

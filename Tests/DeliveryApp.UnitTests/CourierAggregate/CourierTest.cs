@@ -13,7 +13,7 @@ public class CourierShould
     public void BeCorrectWhenParamsIsCorrectOnCreated()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian);
 
@@ -22,14 +22,14 @@ public class CourierShould
         courier.Value.Name.Should().Be("Name");
         courier.Value.Status.Should().Be(Status.NotAvailable);
         courier.Value.Transport.Should().Be(Transport.Pedestrian);
-        courier.Value.Location.Should().Be(Location.Create(1,1).Value);
+        courier.Value.Location.Should().Be(Location.Create(1, 1).Value);
     }
 
     [Fact]
     public void ReturnErrorWhenParamsIsInCorrectOnCreated()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("", Transport.Pedestrian);
 
@@ -42,7 +42,7 @@ public class CourierShould
     public void BeCanStart()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian).Value;
 
@@ -56,7 +56,7 @@ public class CourierShould
     public void BeAlreadyStarted()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian).Value;
 
@@ -67,8 +67,8 @@ public class CourierShould
         result.IsSuccess.Should().BeFalse();
         result.Error.Code.Should().Be("courier.has.already.started");
 
-//        var error = Courier.Errors.CourierHasAlreadyStarted();
-//        result.Error.Should().BeSameAs(error);
+        //        var error = Courier.Errors.CourierHasAlreadyStarted();
+        //        result.Error.Should().BeSameAs(error);
     }
 
 
@@ -76,7 +76,7 @@ public class CourierShould
     public void BeCantStart()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian).Value;
 
@@ -96,7 +96,7 @@ public class CourierShould
     public void BeCanStop()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian).Value;
 
@@ -112,7 +112,7 @@ public class CourierShould
     public void BeCantStop()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian).Value;
 
@@ -130,7 +130,7 @@ public class CourierShould
     public void BeAlreadyStopped()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian).Value;
 
@@ -150,7 +150,7 @@ public class CourierShould
     public void BeCanBusy()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian).Value;
 
@@ -167,7 +167,7 @@ public class CourierShould
     public void BeCantBusy()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian).Value;
 
@@ -185,7 +185,7 @@ public class CourierShould
     public void BeAlreadyBusy()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian).Value;
 
@@ -205,10 +205,10 @@ public class CourierShould
     public void CalcTimeToPointPedestrian()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian).Value;
-        var location = Location.Create(5,5).Value;
+        var location = Location.Create(5, 5).Value;
 
         var speed = courier.CalculateTimeToPoint(location);
 
@@ -220,10 +220,10 @@ public class CourierShould
     public void CalcTimeToPointCarInWhole()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Car).Value;
-        var location = Location.Create(4,5).Value;
+        var location = Location.Create(4, 5).Value;
 
         var speed = courier.CalculateTimeToPoint(location);
 
@@ -238,10 +238,10 @@ public class CourierShould
     public void CalcTimeToPointCarInFractional()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Car).Value;
-        var location = Location.Create(6,5).Value;
+        var location = Location.Create(6, 5).Value;
 
         var speed = courier.CalculateTimeToPoint(location);
 
@@ -256,7 +256,7 @@ public class CourierShould
     public void MoveToInSingleStep()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Car).Value;
         var location = Location.Create(1, 3).Value;
@@ -272,12 +272,12 @@ public class CourierShould
     public void MoveToCorrectBySteps()
     {
         //Arrange
-        
+
         //Act
 
         var courier = Courier.Create("Name", Transport.Car).Value;
 
-        var location = Location.Create(3,9).Value;
+        var location = Location.Create(3, 9).Value;
 
         // speed = 4
         // first step
@@ -285,44 +285,44 @@ public class CourierShould
         var result = courier.Move(location);
 
         result.IsSuccess.Should().BeTrue();
-        courier.Location.Should().Be(Location.Create(3,3).Value);
+        courier.Location.Should().Be(Location.Create(3, 3).Value);
 
         // second step
         // (3,3) - > ( 3, 7)
         result = courier.Move(location);
         result.IsSuccess.Should().BeTrue();
-        courier.Location.Should().Be(Location.Create(3,7).Value);
+        courier.Location.Should().Be(Location.Create(3, 7).Value);
 
         // third step
         // (3,7) - > ( 3, 9)
         result = courier.Move(location);
         result.IsSuccess.Should().BeTrue();
-        courier.Location.Should().Be(Location.Create(3,9).Value);
+        courier.Location.Should().Be(Location.Create(3, 9).Value);
 
     }
 
 
 
     [Theory]
-    [InlineData(1,1)]
-    [InlineData(3,1)]
-    [InlineData(1,3)]
-    [InlineData(7,9)]
+    [InlineData(1, 1)]
+    [InlineData(3, 1)]
+    [InlineData(1, 3)]
+    [InlineData(7, 9)]
     public void SpeedShouldBeEqualToQtyOfSteps(int x, int y)
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Pedestrian).Value;
-        var location = Location.Create(x,y).Value;
+        var location = Location.Create(x, y).Value;
 
         int timeToLocation = courier.CalculateTimeToPoint(location).Value;
         int qtySteps = 0;
 
-        while(courier.Location != location)
+        while (courier.Location != location)
         {
-        	courier.Move(location);
-        	qtySteps++;
+            courier.Move(location);
+            qtySteps++;
         }
 
         var result = qtySteps == timeToLocation;
@@ -335,10 +335,10 @@ public class CourierShould
     public void MoveToInTwoStepsDown()
     {
         //Arrange
-        
+
         //Act
         var courier = Courier.Create("Name", Transport.Car).Value;
-        var location = Location.Create(7,7).Value;
+        var location = Location.Create(7, 7).Value;
 
         courier.Move(location);
         courier.Move(location);
@@ -348,15 +348,13 @@ public class CourierShould
 
 
         // dist = 5+5 = 10, speed = 4, time = 3
-        var location2 = Location.Create(2,2).Value;
+        var location2 = Location.Create(2, 2).Value;
         courier.Move(location2);
         courier.Move(location2);
 
         var result = courier.Move(location2);
-        
+
         result.IsSuccess.Should().BeTrue();
-        courier.Location.Should().Be(Location.Create(2,2).Value);
+        courier.Location.Should().Be(Location.Create(2, 2).Value);
     }
-
-
 }
