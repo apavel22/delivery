@@ -29,7 +29,7 @@ public class OrderRepositoryTestsShould : BaseRepositoryTestsShould
         var order = Order.Create(id, location.Value, weight.Value).Value;
 
         //Act
-        OrderRepository repository = new OrderRepository(_context);
+        IOrderRepository repository = new OrderRepository(_context);
         repository.Add(order);
 
         await repository.UnitOfWork.SaveEntitiesAsync();
@@ -54,7 +54,7 @@ public class OrderRepositoryTestsShould : BaseRepositoryTestsShould
 
 
         //Act
-        OrderRepository repository = new OrderRepository(_context);
+        IOrderRepository repository = new OrderRepository(_context);
         repository.Add(order1);
         repository.Add(order2);
 
@@ -79,14 +79,14 @@ public class OrderRepositoryTestsShould : BaseRepositoryTestsShould
 
         var order = Order.Create(id, location.Value, weight.Value).Value;
 
-        OrderRepository orderRepository = new OrderRepository(_context);
+        IOrderRepository orderRepository = new OrderRepository(_context);
         orderRepository.Add(order);
         await orderRepository.UnitOfWork.SaveEntitiesAsync();
 
 
         // create courier in database
         var courier = DeliveryApp.Core.Domain.CourierAggregate.Courier.Create("Name", DeliveryApp.Core.Domain.CourierAggregate.Transport.Car).Value;
-        CourierRepository courierRepository = new CourierRepository(_context);
+        ICourierRepository courierRepository = new CourierRepository(_context);
         courierRepository.Add(courier);
         await courierRepository.UnitOfWork.SaveEntitiesAsync();
 
@@ -109,7 +109,7 @@ public class OrderRepositoryTestsShould : BaseRepositoryTestsShould
         var order3 = Order.Create(Guid.NewGuid(), Location.Create(1, 7).Value, Weight.Create(3).Value).Value;
 
         //Act
-        OrderRepository orderRepository = new OrderRepository(_context);
+        IOrderRepository orderRepository = new OrderRepository(_context);
         orderRepository.Add(order1);
         orderRepository.Add(order2);
         orderRepository.Add(order3);
@@ -123,7 +123,7 @@ public class OrderRepositoryTestsShould : BaseRepositoryTestsShould
 
         //Arrange
         var courier = DeliveryApp.Core.Domain.CourierAggregate.Courier.Create("Name", DeliveryApp.Core.Domain.CourierAggregate.Transport.Car).Value;
-        CourierRepository courierRepository = new CourierRepository(_context);
+        ICourierRepository courierRepository = new CourierRepository(_context);
         courierRepository.Add(courier);
         await courierRepository.UnitOfWork.SaveEntitiesAsync();
 

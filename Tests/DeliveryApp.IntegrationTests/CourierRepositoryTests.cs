@@ -26,7 +26,7 @@ public class CourierRepositoryTestsShould : BaseRepositoryTestsShould
         var data = Courier.Create("Name 1", transport).Value;
 
         //Act
-        CourierRepository repository = new CourierRepository(_context);
+        ICourierRepository repository = new CourierRepository(_context);
         repository.Add(data);
 
         await repository.UnitOfWork.SaveEntitiesAsync();
@@ -45,7 +45,7 @@ public class CourierRepositoryTestsShould : BaseRepositoryTestsShould
         var data2 = Courier.Create("Name 2", transport).Value;
 
         //Act
-        CourierRepository repository = new CourierRepository(_context);
+        ICourierRepository repository = new CourierRepository(_context);
         repository.Add(data1);
         repository.Add(data2);
 
@@ -70,7 +70,7 @@ public class CourierRepositoryTestsShould : BaseRepositoryTestsShould
         data1.StartWork();
 
         //Act
-        CourierRepository repository = new CourierRepository(_context);
+        ICourierRepository repository = new CourierRepository(_context);
         repository.Add(data1);
 
         await repository.UnitOfWork.SaveEntitiesAsync();
@@ -88,7 +88,7 @@ public class CourierRepositoryTestsShould : BaseRepositoryTestsShould
         var transport = Transport.Car;
         var data = Courier.Create("Name 1", transport).Value;
 
-        CourierRepository repository = new CourierRepository(_context);
+        ICourierRepository repository = new CourierRepository(_context);
         repository.Add(data);
         await repository.UnitOfWork.SaveEntitiesAsync();
 
@@ -131,7 +131,7 @@ public class CourierRepositoryTestsShould : BaseRepositoryTestsShould
         var data2 = Courier.Create("Name 1", transport).Value;
 
         //Act
-        CourierRepository repository = new CourierRepository(_context);
+        ICourierRepository repository = new CourierRepository(_context);
         repository.Add(data1);
         repository.Add(data2);
         await repository.UnitOfWork.SaveEntitiesAsync();

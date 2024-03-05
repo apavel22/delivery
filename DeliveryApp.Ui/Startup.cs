@@ -51,9 +51,10 @@ public class Startup
 
 
         //MediatR Commands
-        // services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Startup>());
-        // services.AddTransient<IRequestHandler<Core.Application.UseCases.Commands.AddOrder.Command,bool>,
-        //     Core.Application.UseCases.Commands.AddOrder.Handler>();
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Startup>());
+         services.AddTransient<IRequestHandler<Core.Application.UseCases.Commands.CreateOrder.Command,bool>,
+             Core.Application.UseCases.Commands.CreateOrderOrder.Handler>();
+
         // services.AddTransient<IRequestHandler<Core.Application.UseCases.Commands.CompleteOrder.Command,bool>,
         //     Core.Application.UseCases.Commands.CompleteOrder.Handler>();
 
