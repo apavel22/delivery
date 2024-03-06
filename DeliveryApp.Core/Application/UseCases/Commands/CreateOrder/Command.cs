@@ -7,24 +7,24 @@ namespace DeliveryApp.Core.Application.UseCases.Commands.CreateOrder;
 
 public class Command : IRequest<bool>
 {
-	public Guid Id { get; set; }
-	public Location Location { get; set; }
-	public Weight Weight { get; set; }
+	public Guid Id { get; private set; }
+	public int X { get; private set; }
+	public int Y { get; private set; }
+	public int Weight { get; private set; }
 
 	protected Command()
 	{
 	}
 
 
-	public Command(Guid orderId, Location location, Weight weight)
+	public Command(Guid orderId, int x, int y, int weight)
 	{
-		if (orderId == Guid.Empty) throw new ArgumentException(nameof(orderId));
-		if (location == null) throw new ArgumentException(nameof(location));
-		if (weight == null) throw new ArgumentException(nameof(weight));
+//		if (orderId == Guid.Empty) throw new ArgumentException(nameof(orderId));
 
 		Id = orderId;
-		Location = location;
 		Weight = weight;
+		X = x;
+		Y = y;
 	}
 
 }

@@ -25,11 +25,18 @@ public class CreateOrderCommandShould
     [Fact]
     public async void CanCreateOrder()
     {
-        var id = Guid.NewGuid();
-        var location = Location.Create(4, 9);
-        var weight = Weight.Create(7);
+        var orderId = Guid.NewGuid();
 
-        var command = new Core.Application.UseCases.Commands.CreateOrder.Command(id, location.Value, weight.Value);
+	   	// setup mock:
+		_orderRepositoryMock.UnitOfWork.SaveEntitiesAsync().Returns(Task.FromResult(true));
+        _orderRepositoryMock.GetByIdAsync(Arg.Any<Guid>()).Returns(Task.FromResult(EmptyOrder()));
+
+
+        var location_x = 4;
+        var location_y = 9;
+        var weight = 7;
+
+        var command = new Core.Application.UseCases.Commands.CreateOrder.Command(orderId, location_x, location_y, weight);
         var handler = new Core.Application.UseCases.Commands.CreateOrder.Handler(_orderRepositoryMock);
 
         //Act
@@ -40,72 +47,59 @@ public class CreateOrderCommandShould
         _orderRepositoryMock.Received(1);
     }
 
+    [Theory]
+    [InlineData(true, 1, 1, 1)]
+    [InlineData(false, 0, 0, 0)]
+    [InlineData(false, 1, 0, 0)]
+    [InlineData(false, 0, 1, 0)]
+    [InlineData(false, 1, 1, 0)]
+    public async void ReturnFalseWhenParamsIsWrong(bool idIsNull, int x, int y, int weight)
+    {
+    	// setup mock:
+		_orderRepositoryMock.UnitOfWork.SaveEntitiesAsync().Returns(Task.FromResult(true));
 
-    /*
-        [Fact]
-        public async void ReturnFalseWhenGoodNotExists()
-        {
-            //Arrange
-            var buyerId = Guid.NewGuid();
-            _goodRepositoryMock.GetAsync(Arg.Any<Guid>())
-                .Returns(Task.FromResult(EmptyGood()));
+        var orderId = idIsNull ? Guid.Empty : Guid.NewGuid();
 
-            var command = new Core.Application.UseCases.Commands.ChangeItems.Command(buyerId,Good.Bread.Id,1);
-            var handler = new Core.Application.UseCases.Commands.ChangeItems.Handler(_basketRepositoryMock,_goodRepositoryMock);
+        var command = new Core.Application.UseCases.Commands.CreateOrder.Command(orderId, x, y, weight);
+        var handler = new Core.Application.UseCases.Commands.CreateOrder.Handler(_orderRepositoryMock);
 
-            //Act
-            var result = await handler.Handle(command, new CancellationToken());
+        //Act
+        var result = await handler.Handle(command, new CancellationToken());
 
-            //Assert
-            result.Should().BeFalse();
-        }
+        //Assert
+        result.Should().BeFalse();
+    }
 
-        [Fact]
-        public async void CanAddNewBasket()
-        {
-            //Arrange
-            var buyerId = Guid.NewGuid();
+    [Fact]
+    public async void ReturnFalseWhenOrderAlreadyExists()
+    {
+        var orderId = Guid.NewGuid();
 
-            _goodRepositoryMock.GetAsync(Arg.Any<Guid>())
-                .Returns(Task.FromResult(CorrectGood()));
-            _basketRepositoryMock.GetByBuyerIdAsync(Arg.Any<Guid>())
-                .Returns(Task.FromResult(EmptyBasket()));
-            _basketRepositoryMock.Add(Arg.Any<Basket>())
-                .Returns(CorrectBasket(buyerId));
-            _basketRepositoryMock.UnitOfWork.SaveEntitiesAsync()
-                .Returns(Task.FromResult(true));
+    	// setup mock:
+		_orderRepositoryMock.UnitOfWork.SaveEntitiesAsync().Returns(Task.FromResult(true));
+        _orderRepositoryMock.GetByIdAsync(Arg.Any<Guid>()).Returns(Task.FromResult(ExistingOrder(orderId)));
 
-            var command = new Core.Application.UseCases.Commands.ChangeItems.Command(buyerId,Good.Bread.Id,1);
-            var handler = new Core.Application.UseCases.Commands.ChangeItems.Handler(_basketRepositoryMock,_goodRepositoryMock);
+        var location_x = 4;
+        var location_y = 9;
+        var weight = 7;
 
-            //Act
-            var result = await handler.Handle(command, new CancellationToken());
+        var command = new Core.Application.UseCases.Commands.CreateOrder.Command(orderId, location_x, location_y, weight);
+        var handler = new Core.Application.UseCases.Commands.CreateOrder.Handler(_orderRepositoryMock);
 
-            //Assert
-            result.Should().BeTrue();
-            _goodRepositoryMock.Received(1);
-            _basketRepositoryMock.Received(1);
-        }
+        //Act
+        var result = await handler.Handle(command, new CancellationToken());
 
-        private Good EmptyGood()
-        {
-            return null;
-        }
+        //Assert
+        result.Should().BeFalse();
+    }
 
-        private Good CorrectGood()
-        {
-            return Good.Bread;
-        }
-
-        private Basket EmptyBasket()
-        {
-            return null;
-        }
-
-        private Basket CorrectBasket(Guid buyerId)
-        {
-            return Basket.Create(buyerId).Value;
-        }
-    */
-
+	private Order ExistingOrder(Guid orderId)
+	{
+		return Order.Create(orderId, Location.MinLocation, Weight.Create(1).Value).Value;
+	}
+ 
+	private Order EmptyOrder()
+	{
+		return null;
+	}
 }
