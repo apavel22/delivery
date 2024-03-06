@@ -7,9 +7,10 @@ namespace DeliveryApp.Core.Application.UseCases.Commands.AssignCourierToOrder;
 
 public class Command : IRequest<bool>
 {
-	public Guid CourierId { get; private set; }
-	public Guid OrderId { get; private set; }
+//	public Guid CourierId { get; private set; }
+//	public Guid OrderId { get; private set; }
 
+/*
 	protected Command()
 	{
 	}
@@ -19,4 +20,9 @@ public class Command : IRequest<bool>
 		CourierId = courierId;
 		OrderId = orderId;
 	}
+*/
+	public Command()
+	{
+	}
+
 }

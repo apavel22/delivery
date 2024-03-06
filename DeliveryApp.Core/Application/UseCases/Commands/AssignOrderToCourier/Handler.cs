@@ -5,7 +5,10 @@ using DeliveryApp.Core.Domain.CourierAggregate;
 using DeliveryApp.Core.Domain.OrderAggregate;
 using DeliveryApp.Core.Ports;
 
+using DeliveryApp.Core.DomainServices;
+
 using Primitives;
+
 
 namespace DeliveryApp.Core.Application.UseCases.Commands.AssignCourierToOrder;
 
@@ -20,6 +23,44 @@ public class Handler : IRequestHandler<Command, bool>
         _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
     }
 
+
+    public async Task<bool> Handle(Command message, CancellationToken cancellationToken)
+    {
+    	// все новые заказы
+    	var orders = _orderRepository.GetAllNew();
+    	if(orders == null || orders.Any() == false) return false;
+
+    	// берем первый
+    	var order = orders.First();
+
+    	// все сводобные курьеры
+    	// <todo> тут сразу можно получать с нужным весом
+    	var couriers = _courierRepository.GetAllReady();
+    	if(couriers == null || couriers.Any() == false) return false;
+
+    	// получаем курьера
+    	var courier = DispatchService.Dispatch(order, couriers);
+    	if(courier == null) return false;
+
+    	// назначаем на заказ
+    	if(order.AssignToCourier(courier).IsFailure) return false;
+
+    	// статус курьеру
+    	if(courier.InWork().IsFailure) return false;
+
+    	// все в базу
+    	await using var transaction = await _orderRepository.UnitOfWork.BeginTransactionAsync();
+
+        _courierRepository.Update(courier);
+        _orderRepository.Update(order);
+
+        await _orderRepository.UnitOfWork.CommitTransactionAsync(transaction);
+
+        return true;
+    }
+    	
+
+/*
     public async Task<bool> Handle(Command message, CancellationToken cancellationToken)
     {
     	var courier = await _courierRepository.GetByIdAsync(message.CourierId);
@@ -50,4 +91,5 @@ public class Handler : IRequestHandler<Command, bool>
         return true;
 //        return await _courierRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
     }
+*/
 }
