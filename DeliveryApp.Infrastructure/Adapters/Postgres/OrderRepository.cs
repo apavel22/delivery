@@ -35,16 +35,31 @@ public class OrderRepository : IOrderRepository
         _dbContext.SaveChanges();
     }
 
-    public async Task<Order> GetByIdAsync(Guid Id)
+    public async Task<Order> GetByIdAsync(Guid orderId)
     {
         var data = await _dbContext
             .Orders
                 .Include(x => x.Status)
-            .FirstOrDefaultAsync(o => o.Id == Id);
+            .Where(o => o.Id == orderId)
+            .FirstOrDefaultAsync();
 
         return data;
 
     }
+
+    public async Task<Order> GetAssignedOrderByCourierIdAsync(Guid courierId)
+    {
+        var data = await _dbContext
+            .Orders
+                .Include(x => x.Status)
+            .Where(o => o.Status == Status.Assigned)
+            .Where(o => o.CourierId == courierId)
+            .FirstOrDefaultAsync();
+
+        return data;
+    
+    }
+
 
     public IEnumerable<Order> GetAllNew()
     {
@@ -54,6 +69,7 @@ public class OrderRepository : IOrderRepository
             .Where(o => o.Status == Status.New);
         return data;
     }
+
 
 }
 

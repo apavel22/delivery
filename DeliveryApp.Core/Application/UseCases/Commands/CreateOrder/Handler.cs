@@ -25,17 +25,12 @@ public class Handler : IRequestHandler<Command, bool>
     	if(weight.IsFailure)   	return false;
 
     	// order already exists
-    	Order existingOrder = await _orderRepository.GetByIdAsync(message.Id);
-    	if(existingOrder != null) {
-    		Console.WriteLine("here " + message.Id + " " + existingOrder.Id + " " + existingOrder.Weight.Value);
-    	   	return false;
-    	}
+    	Order existingOrder = await _orderRepository.GetByIdAsync(message.OrderId);
+    	if(existingOrder != null) 	return false;
 
     	// wrogn params
-        var order = Order.Create(message.Id, location.Value, weight.Value);
-        if (order.IsFailure) {
-	        return false;
-        }
+        var order = Order.Create(message.OrderId, location.Value, weight.Value);
+        if (order.IsFailure) return false;
 
         _orderRepository.Add(order.Value);
 

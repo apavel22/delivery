@@ -41,6 +41,7 @@ public class Courier : Aggregate
         {
             return new($"{nameof(Courier).ToLowerInvariant()}.has.invalid.status.to.assign.to.order", "Курьер не может брать заказ из Status {status}");
         }
+
     }
 
     public virtual string Name { get; protected set; }
@@ -113,6 +114,21 @@ public class Courier : Aggregate
 		 if (Status != Status.Ready) return Errors.CourierHasInvalidStatusToStopWork(Status);   	
 
 		 Status = Status.NotAvailable;
+
+		 return new object();
+    }
+
+	/// <summary>
+	/// Stop work
+	/// can stop from Ready only
+	/// </summary>
+	/// <returns></returns>
+    public Result<object, Error> CompleteWork()
+    {
+		 if (Status == Status.Ready) return Errors.CourierHasAlreadyStarted();   	
+		 if (Status != Status.InWork) return Errors.CourierHasInvalidStatusToStartWork(Status);   	
+
+		 Status = Status.Ready;
 
 		 return new object();
     }

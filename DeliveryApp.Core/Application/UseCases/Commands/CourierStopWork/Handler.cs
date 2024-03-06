@@ -1,0 +1,35 @@
+﻿using MediatR;
+
+using DeliveryApp.Core.Domain.SharedKernel;
+using DeliveryApp.Core.Domain.CourierAggregate;
+using DeliveryApp.Core.Ports;
+
+namespace DeliveryApp.Core.Application.UseCases.Commands.CourierStopWork;
+
+public class Handler : IRequestHandler<Command, bool>
+{
+    private readonly ICourierRepository _courierRepository;
+
+    public Handler(ICourierRepository courierRepository)
+    {
+        _courierRepository = courierRepository ?? throw new ArgumentNullException(nameof(courierRepository));
+    }
+
+    public async Task<bool> Handle(Command message, CancellationToken cancellationToken)
+    {
+    	var courier = await _courierRepository.GetByIdAsync(message.CourierId);
+    	if(courier == null) return false;
+
+    	// cant stop with active order
+    	// может быть стои проверять по заказам?
+    	if(courier.Status == Status.InWork) return false;
+
+    	// wrong params
+        var result = courier.StopWork();
+        if (result.IsFailure)  return false;
+
+        _courierRepository.Update(courier);
+
+        return await _courierRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+    }
+}

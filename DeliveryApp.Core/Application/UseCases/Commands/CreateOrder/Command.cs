@@ -7,7 +7,7 @@ namespace DeliveryApp.Core.Application.UseCases.Commands.CreateOrder;
 
 public class Command : IRequest<bool>
 {
-	public Guid Id { get; private set; }
+	public Guid OrderId { get; private set; }
 	public int X { get; private set; }
 	public int Y { get; private set; }
 	public int Weight { get; private set; }
@@ -21,7 +21,7 @@ public class Command : IRequest<bool>
 	{
 //		if (orderId == Guid.Empty) throw new ArgumentException(nameof(orderId));
 
-		Id = orderId;
+		OrderId = orderId;
 		Weight = weight;
 		X = x;
 		Y = y;

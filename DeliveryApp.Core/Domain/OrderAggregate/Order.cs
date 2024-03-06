@@ -97,7 +97,7 @@ public class Order : Aggregate
 		return new object();
 	}
 
-	public Result<object, Error> Complete(Courier courier)
+	public Result<object, Error> Complete()
 	{
 		if (Status == Status.Completed) return Errors.OrderHasAlreadyCompleted();
 		if (Status != Status.Assigned) return Errors.OrderHasNotBeAssignedToCourier();
