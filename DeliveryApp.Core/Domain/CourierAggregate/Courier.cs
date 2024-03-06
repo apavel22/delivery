@@ -227,4 +227,10 @@ public class Courier : Aggregate
 
     	return new object();
 	}
+
+    public Result<bool, Error> CanCarry(Weight weight) 
+    {
+    	return Transport.CanCarry(weight);
+    }
+
 }
