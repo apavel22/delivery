@@ -1,3 +1,5 @@
+using System;
+
 using DeliveryApp.Core.Domain.CourierAggregate;
 using DeliveryApp.Core.Domain.SharedKernel;
 
@@ -13,18 +15,17 @@ public class TransportShould
     public void ReturnCorrectIdAndName()
     {
         //Arrange
-        
+
         //Act
         var pedestrianTransport = Transport.Pedestrian;
         var bicycleTransport = Transport.Bicycle;
         var scooterTransport = Transport.Scooter;
         var carTransport = Transport.Car;
-        
 
         //Assert
         pedestrianTransport.Id.Should().Be(1);
         pedestrianTransport.Name.Should().Be("pedestrian");
-        
+
         bicycleTransport.Id.Should().Be(2);
         bicycleTransport.Name.Should().Be("bicycle");
 
@@ -35,78 +36,69 @@ public class TransportShould
         carTransport.Name.Should().Be("car");
 
     }
-    
+
     [Theory]
-    [InlineData(1,"pedestrian")]
-    [InlineData(2,"bicycle")]
-    [InlineData(3,"scooter")]
-    [InlineData(4,"car")]
+    [InlineData(1, "pedestrian")]
+    [InlineData(2, "bicycle")]
+    [InlineData(3, "scooter")]
+    [InlineData(4, "car")]
     public void CanBeFoundById(int id, string name)
     {
         //Arrange
-        
+
         //Act
         var transport = Transport.From(id).Value;
-        
-        //Assert
-        transport.Id.Should().Be(id);
-        transport.Name.Should().Be(name);
-    }
-    
-    [Theory]
-    [InlineData(1,"pedestrian")]
-    [InlineData(2,"bicycle")]
-    [InlineData(3,"scooter")]
-    [InlineData(4,"car")]
-    public void CanBeFoundByName(int id, string name)
-    {
-        //Arrange
-        
-        //Act
-        var transport = Transport.FromName(name).Value;
-        
+
         //Assert
         transport.Id.Should().Be(id);
         transport.Name.Should().Be(name);
     }
 
     [Theory]
-    [InlineData(-7,"some")]
-    public void CanNotBeFoundByWrongName(int id, string name)
+    [InlineData(1, "pedestrian")]
+    [InlineData(2, "bicycle")]
+    [InlineData(3, "scooter")]
+    [InlineData(4, "car")]
+    public void CanBeFoundByName(int id, string name)
     {
         //Arrange
-        
+
+        //Act
+        var transport = Transport.FromName(name).Value;
+
+        //Assert
+        transport.Id.Should().Be(id);
+        transport.Name.Should().Be(name);
+    }
+
+    [Theory]
+    [InlineData(-7, "some")]
+    public void CanNotBeFoundByWrongParams(int id, string name)
+    {
+        //Arrange
+
         //Act
         var transport = Transport.FromName(name);
 
         transport.IsSuccess.Should().BeFalse();
         transport.Error.Should().NotBeNull();
-        
-    }
 
-    [Theory]
-    [InlineData(-7,"some")]
-    public void CanNotBeFoundByWrongId(int id, string name)
-    {
-        //Arrange
-        
         //Act
-        var transport = Transport.From(id);
+        transport = Transport.From(id);
 
         transport.IsSuccess.Should().BeFalse();
         transport.Error.Should().NotBeNull();
-        
     }
-    
+
 
     [Fact]
     public void ReturnListOfTransports()
     {
         //Arrange
-        
+
         //Act
         var allTransports = Transport.List();
-        
+
         //Assert
         allTransports.Should().NotBeEmpty();
     }
@@ -118,12 +110,21 @@ public class TransportShould
         //Arrange
         var transport = Transport.Pedestrian;
         var weight = Weight.Create(1).Value;
-        
+
         //Act
         var result = transport.CanCarry(weight);
 
         //Assert
-        result.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeTrue();
+
+        //Act
+        Weight weightFrom = null;
+        var resultForNull = transport.CanCarry(weightFrom);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeTrue();
+
     }
 
     [Fact]
@@ -131,12 +132,13 @@ public class TransportShould
     {
         //Arrange
         var transport = Transport.Pedestrian;
-        var weight = Weight.Create(transport.Capacity.Value+1).Value;
-        
+        var weight = Weight.Create(transport.Capacity.Value + 1).Value;
+
         //Act
         var result = transport.CanCarry(weight);
 
         //Assert
-        result.Should().BeFalse();
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeFalse();
     }
 }

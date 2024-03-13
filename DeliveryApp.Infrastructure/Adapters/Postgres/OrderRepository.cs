@@ -12,19 +12,18 @@ public class OrderRepository : IOrderRepository
 {
     private readonly ApplicationDbContext _dbContext;
 
+    public IUnitOfWork UnitOfWork => _dbContext;
+
     public OrderRepository(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
-    public Order Add(Order data)
+    public void Add(Order data)
     {
         _dbContext.Attach(data.Status);
-        var dataOut = _dbContext.Orders.Add(data).Entity;
-
+        _dbContext.Orders.Add(data);
         _dbContext.SaveChanges();
-
-        return dataOut;
     }
 
 
@@ -36,32 +35,41 @@ public class OrderRepository : IOrderRepository
         _dbContext.SaveChanges();
     }
 
-    public async Task<Order> GetByIdAsync(Guid Id)
+    public async Task<Order> GetByIdAsync(Guid orderId)
     {
         var data = await _dbContext
             .Orders
-	            .Include(x => x.Status)
-            .FirstOrDefaultAsync(o => o.Id == Id);
+                .Include(x => x.Status)
+            .Where(o => o.Id == orderId)
+            .FirstOrDefaultAsync();
 
-/*
-            if (data == null)
-            {
-                data = _dbContext
-                    .Orders
-                    .Local
-    	        .FirstOrDefault(o => o.Id == Id);
-            }
-*/
         return data;
 
-	}
+    }
 
-    public IEnumerable<Order> GetAllUnassigned()
+    public async Task<Order> GetAssignedOrderByCourierIdAsync(Guid courierId)
     {
-        var data = _dbContext.Orders.Where(o => o.Status == Status.Created);
+        var data = await _dbContext
+            .Orders
+                .Include(x => x.Status)
+            .Where(o => o.Status == Status.Assigned)
+            .Where(o => o.CourierId == courierId)
+            .FirstOrDefaultAsync();
 
+        return data;
+    
+    }
+
+
+    public IEnumerable<Order> GetAllNew()
+    {
+        var data = _dbContext
+            .Orders
+                .Include(x => x.Status)
+            .Where(o => o.Status == Status.New);
         return data;
     }
+
 
 }
 

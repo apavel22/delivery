@@ -11,10 +11,10 @@ namespace DeliveryApp.Core.Domain.CourierAggregate;
 /// </summary>
 public class Transport : Entity<int>
 {
-    public static readonly Transport Pedestrian     = new(1, nameof(Pedestrian).ToLowerInvariant(), Speed.Create(1).Value, Weight.Create(1).Value);
-    public static readonly Transport Bicycle        = new(2, nameof(Bicycle).ToLowerInvariant(),    Speed.Create(2).Value, Weight.Create(4).Value);
-    public static readonly Transport Scooter        = new(3, nameof(Scooter).ToLowerInvariant(),    Speed.Create(3).Value, Weight.Create(6).Value);
-    public static readonly Transport Car            = new(4, nameof(Car).ToLowerInvariant(),        Speed.Create(4).Value, Weight.Create(8).Value);
+    public static readonly Transport Pedestrian = new(1, nameof(Pedestrian).ToLowerInvariant(), Speed.Create(1).Value, Weight.Create(1).Value);
+    public static readonly Transport Bicycle = new(2, nameof(Bicycle).ToLowerInvariant(), Speed.Create(2).Value, Weight.Create(4).Value);
+    public static readonly Transport Scooter = new(3, nameof(Scooter).ToLowerInvariant(), Speed.Create(3).Value, Weight.Create(6).Value);
+    public static readonly Transport Car = new(4, nameof(Car).ToLowerInvariant(), Speed.Create(4).Value, Weight.Create(8).Value);
 
 
     /// <summary>
@@ -22,7 +22,7 @@ public class Transport : Entity<int>
     /// - всегда будет в lower case
     /// </summary>
     public string Name { get; protected set; }
-    
+
     public Speed Speed { get; protected set; }
 
     public Weight Capacity { get; protected set; }
@@ -30,42 +30,43 @@ public class Transport : Entity<int>
 
     public static class Errors
     {
-		public static Error TransportIsWrong(int id)
+        public static Error TransportIsWrong(int id)
         {
-            return new($"{nameof(Transport).ToLowerInvariant()}.is.wrong", 
-                $"Не верное значение {id}. Допустимые значения: { nameof(Transport).ToLowerInvariant()}: { string.Join(",", List().Select(s => s.Id))}");
+            return new($"{nameof(Transport).ToLowerInvariant()}.is.wrong",
+                $"Не верное значение {id}. Допустимые значения: {nameof(Transport).ToLowerInvariant()}: {string.Join(",", List().Select(s => s.Id))}");
         }
-		public static Error TransportIsWrong(string name)
+        public static Error TransportIsWrong(string name)
         {
-            return new($"{nameof(Transport).ToLowerInvariant()}.is.wrong", 
-                $"Не верное значение {name}. Допустимые значения: { nameof(Transport).ToLowerInvariant()}: { string.Join(",", List().Select(s => s.Name))}");
+            return new($"{nameof(Transport).ToLowerInvariant()}.is.wrong",
+                $"Не верное значение {name}. Допустимые значения: {nameof(Transport).ToLowerInvariant()}: {string.Join(",", List().Select(s => s.Name))}");
         }
     }
 
-	protected Transport() {}
+    protected Transport() { }
 
     /// <summary>
     /// ctor:
     /// </summary>
 	protected Transport(int id, string name, Speed speed, Weight capacity) : base(id)
-	{
-	    Name = name.ToLowerInvariant();
-	    Speed = speed;
-	    Capacity = capacity;
-	}
-
-
-    public bool CanCarry(Weight weight) 
     {
-    	return weight <= Capacity;
+        Name = name.ToLowerInvariant();
+        Speed = speed;
+        Capacity = capacity;
     }
 
-	public static IEnumerable<Transport> List()
+
+    public Result<bool, Error> CanCarry(Weight weight)
+    {
+        if (weight == null) return GeneralErrors.ValueIsRequired(nameof(weight));
+        return weight <= Capacity;
+    }
+
+    public static IEnumerable<Transport> List()
     {
         yield return Pedestrian;
         yield return Bicycle;
         yield return Scooter;
-        yield return Car ;
+        yield return Car;
     }
 
     /// <summary>

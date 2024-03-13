@@ -5,59 +5,58 @@ using Xunit;
 
 namespace DeliveryApp.UnitTests.SharedKernel;
 
-public class SpeedShould
+public class WeightShould
 {
     [Fact]
     public void BeCorrectWhenParamsIsCorrectOnCreated()
     {
         //Arrange
-        
+
         //Act
-        var speed = Speed.Create(10);
+        var weight = Weight.Create(100);
 
         //Assert
-        speed.IsSuccess.Should().BeTrue();
-        speed.Value.Value.Should().Be(10);
+        weight.IsSuccess.Should().BeTrue();
+        weight.Value.Value.Should().Be(100);
     }
 
 
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    [InlineData(11)]
     public void ReturnErrorWhenParamsIsInCorrectOnCreated(int value)
     {
         //Arrange
-        
+
         //Act
-        var speed = Speed.Create(value);
+        var weight = Weight.Create(value);
 
         //Assert
-        speed.IsSuccess.Should().BeFalse();
-        speed.Error.Should().NotBeNull();
+        weight.IsSuccess.Should().BeFalse();
+        weight.Error.Should().NotBeNull();
     }
-    
+
     [Fact]
     public void BeEqualWhenAllPropertiesIsEqual()
     {
         //Arrange
-        var first = Speed.Create(10).Value;
-        var second = Speed.Create(10).Value;
-        
+        var first = Weight.Create(10).Value;
+        var second = Weight.Create(10).Value;
+
         //Act
         var result = first == second;
 
         //Assert
         result.Should().BeTrue();
     }
-    
+
     [Fact]
     public void BeNotEqualWhenAllPropertiesIsEqual()
     {
         //Arrange
-        var first = Speed.Create(10).Value;
-        var second = Speed.Create(5).Value;
-        
+        var first = Weight.Create(10).Value;
+        var second = Weight.Create(5).Value;
+
         //Act
         var result = first == second;
 
@@ -69,23 +68,23 @@ public class SpeedShould
     public void CanCompareMoreThen()
     {
         //Arrange
-        var first = Speed.Create(10).Value;
-        var second = Speed.Create(5).Value;
-        
+        var first = Weight.Create(10).Value;
+        var second = Weight.Create(5).Value;
+
         //Act
         var result = first > second;
 
         //Assert
         result.Should().BeTrue();
     }
-    
+
     [Fact]
     public void CanCompareLessThen()
     {
         //Arrange
-        var first = Speed.Create(5).Value;
-        var second = Speed.Create(10).Value;
-        
+        var first = Weight.Create(5).Value;
+        var second = Weight.Create(10).Value;
+
         //Act
         var result = first < second;
 
@@ -94,50 +93,49 @@ public class SpeedShould
     }
 
     [Theory]
-    [InlineData(10,5)]
-    [InlineData(10,10)]
-    public void CanCompareGreaterThenOrEqual(int firstWeight, int secondWeight)
+    [InlineData(10, 5)]
+    [InlineData(10, 10)]
+    public void CanCompareGreaterThenOrEqual(int _first, int _second)
     {
         //Arrange
-        var first = Speed.Create(firstWeight).Value;
-        var second = Speed.Create(secondWeight).Value;
-        
+        var first = Weight.Create(_first).Value;
+        var second = Weight.Create(_second).Value;
+
         //Act
         var result = first >= second;
 
         //Assert
         result.Should().BeTrue();
+
     }
 
-
     [Theory]
-    [InlineData(5,10)]
-    [InlineData(10,10)]
-    public void CanCompareLessThenOrEqual(int firstWeight, int secondWeight)
+    [InlineData(5, 10)]
+    [InlineData(10, 10)]
+    public void CanCompareLessThenOrEqual(int _first, int _second)
     {
+        //Arrange
+        var first = Weight.Create(_first).Value;
+        var second = Weight.Create(_second).Value;
 
-    //Arrange
-        var first = Speed.Create(firstWeight).Value;
-        var second = Speed.Create(secondWeight).Value;
-        
         //Act
         var result = first <= second;
 
         //Assert
         result.Should().BeTrue();
+
     }
 
     [Fact]
     public void ToIntConversion()
     {
         //Arrange
-        
+
         //Act
-        var speed = Speed.Create(10).Value;
-        int value = speed;
+        var weight = Weight.Create(10).Value;
+        int value = weight;
 
         //Assert
         value.Should().Be(10);
     }
-
 }

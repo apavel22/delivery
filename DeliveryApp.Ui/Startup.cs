@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 
+using MediatR;
+
+
 using DeliveryApp.Infrastructure;
 
 using DeliveryApp.Core.Ports;
@@ -51,11 +54,17 @@ public class Startup
 
 
         //MediatR Commands
-        // services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Startup>());
-        // services.AddTransient<IRequestHandler<Core.Application.UseCases.Commands.AddOrder.Command,bool>,
-        //     Core.Application.UseCases.Commands.AddOrder.Handler>();
-        // services.AddTransient<IRequestHandler<Core.Application.UseCases.Commands.CompleteOrder.Command,bool>,
-        //     Core.Application.UseCases.Commands.CompleteOrder.Handler>();
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Startup>());
+        services.AddTransient<IRequestHandler<Core.Application.UseCases.Commands.CreateOrder.Command,bool>,
+             Core.Application.UseCases.Commands.CreateOrder.Handler>();
+        services.AddTransient<IRequestHandler<Core.Application.UseCases.Commands.CourierStartWork.Command,bool>,
+             Core.Application.UseCases.Commands.CourierStartWork.Handler>();
+        services.AddTransient<IRequestHandler<Core.Application.UseCases.Commands.CourierStopWork.Command,bool>,
+             Core.Application.UseCases.Commands.CourierStopWork.Handler>();
+        services.AddTransient<IRequestHandler<Core.Application.UseCases.Commands.CourierMoveOneStep.Command,bool>,
+             Core.Application.UseCases.Commands.CourierMoveOneStep.Handler>();
+
+
 
         //MediatR Queries
         // services.AddTransient<IRequestHandler<Core.Application.UseCases.Queries.GetOrder.Query,

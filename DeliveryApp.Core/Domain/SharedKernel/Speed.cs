@@ -52,14 +52,14 @@ public sealed class Speed : ValueObject
         return first.Value < second.Value;
     }
 
-    public static bool operator > (Speed first, Speed second)
-    {
-        return first.Value > second.Value;
-    }
-
     public static bool operator <= (Speed first, Speed second)
     {
         return first.Value <= second.Value;
+    }
+
+    public static bool operator > (Speed first, Speed second)
+    {
+        return first.Value > second.Value;
     }
 
     public static bool operator >= (Speed first, Speed second)
@@ -67,7 +67,10 @@ public sealed class Speed : ValueObject
         return first.Value >= second.Value;
     }
 
-
+    /// <summary>
+    /// to int
+    /// </summary>
+    /// <param name="value"></param>
 	public static implicit operator int(Speed value)
     {
 		return value.Value;
