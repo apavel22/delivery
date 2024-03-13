@@ -7,7 +7,7 @@ using DeliveryApp.Infrastructure;
 
 using DeliveryApp.Core.Ports;
 using DeliveryApp.Infrastructure.Adapters.Postgres;
-
+using DeliveryApp.Infrastructure.Adapters.Grpc;
 
 
 namespace DeliveryApp.Ui;
@@ -34,6 +34,7 @@ public class Startup
         services.Configure<Settings>(options => Configuration.Bind(options));
         var connectionString = Configuration["CONNECTION_STRING"];
         var rabbitMqHost = Configuration["RABBIT_MQ_HOST"];
+		var geoServiceGrpcHost = Configuration["GEO_SERVICE_GRPC_HOST"];
 
         // БД 
         services.AddDbContext<ApplicationDbContext>(options =>
@@ -121,6 +122,13 @@ public class Startup
         // });
         // services.AddSwaggerGenNewtonsoftSupport();
         services.AddHealthChecks();
+
+		// gRPC
+		services.AddGrpcClient<Client>(options => 
+		{ 
+			options.Address = new Uri (geoServiceGrpcHost); 
+		});
+
 
         //Message Broker
         // services.AddMassTransit(x =>

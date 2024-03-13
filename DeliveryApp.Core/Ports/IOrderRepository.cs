@@ -35,6 +35,5 @@ public interface IOrderRepository : IRepository<Order>
     IEnumerable<Order> GetAllNew();
 
     Task<Order> GetAssignedOrderByCourierIdAsync(Guid courierId); 
-
 }
 
